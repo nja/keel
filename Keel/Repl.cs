@@ -18,7 +18,9 @@ namespace Keel
         private SymbolsTable symbols = new DefaultSymbols();
         private LispEnvironment environment = new DefaultEnvironment();
 
-        const string Prompt = "> ";
+        const string Prompt = "> ",
+                 ContPrompt = "  ",
+                     Result = " => ";
 
         public Repl(TextReader input, TextWriter output)
         {
@@ -71,7 +73,7 @@ namespace Keel
                     {
                         var results = forms.Select(f => environment.Eval(f)).ToList();
 
-                        output.WriteLine(string.Join(output.NewLine, results.Select(r => " => " + r.ToString())));
+                        output.WriteLine(string.Join(output.NewLine, results.Select(r => Result + r.ToString())));
                     }
                     catch (Exception evalEx)
                     {
@@ -81,6 +83,10 @@ namespace Keel
                     }
 
                     output.Write(Prompt);
+                }
+                else
+                {
+                    output.Write(ContPrompt);
                 }
             }
         }

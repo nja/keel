@@ -14,12 +14,12 @@ namespace Keel.Objects
 
     public abstract class Function : LispObject
     {
-        private readonly Symbol[] Args;
+        private readonly Symbol[] args;
         private readonly Cons body;
 
         public Function(IEnumerable<Symbol> args, Cons body)
         {
-            this.Args = args.ToArray();
+            this.args = args.ToArray();
             this.body = body;
         }
 
@@ -27,7 +27,7 @@ namespace Keel.Objects
 
         public IEnumerable<Symbol> Arguments
         {
-            get { return Args; }
+            get { return args; }
         }
     }
 }

@@ -131,7 +131,6 @@ namespace Keel.Objects
 
                 var arguments = Cdr.Of(expr);
                 var argumentValues = arguments.As<Cons>().Select(car => Eval(car));
-                //var argumentValues = ((Cons)Cdr.Of(expr)).Select(x => Eval(x));
 
                 return fun.Apply(argumentValues, this);
             }
