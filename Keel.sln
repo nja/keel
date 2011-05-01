@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keel", "Keel\Keel.csproj", "{BBC260A6-BF72-4B91-87AE-3958E18AFC57}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeelConsole", "KeelConsole\KeelConsole.csproj", "{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,19 @@ Global
 		{BBC260A6-BF72-4B91-87AE-3958E18AFC57}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BBC260A6-BF72-4B91-87AE-3958E18AFC57}.Release|x64.ActiveCfg = Release|Any CPU
 		{BBC260A6-BF72-4B91-87AE-3958E18AFC57}.Release|x86.ActiveCfg = Release|Any CPU
+		{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}.Debug|Any CPU.Build.0 = Debug|x86
+		{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}.Debug|x64.ActiveCfg = Debug|x86
+		{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}.Debug|x86.ActiveCfg = Debug|x86
+		{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}.Debug|x86.Build.0 = Debug|x86
+		{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}.Release|Any CPU.ActiveCfg = Release|x86
+		{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}.Release|Mixed Platforms.Build.0 = Release|x86
+		{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}.Release|x64.ActiveCfg = Release|x86
+		{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}.Release|x86.ActiveCfg = Release|x86
+		{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

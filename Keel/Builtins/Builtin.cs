@@ -18,9 +18,9 @@ namespace Keel.Builtins
 
         public string Name { get { return Symbol.Name; } }
 
-        public override LispObject Apply(IEnumerable<LispObject> arguments, LispEnvironment env)
+        public override LispObject Apply(IEnumerable<LispObject> argumentValues, LispEnvironment env)
         {
-            return Apply(env, Arguments.ToArray());
+            return Apply(env, argumentValues.ToArray());
         }
 
         protected abstract LispObject Apply(LispEnvironment env, LispObject[] args);

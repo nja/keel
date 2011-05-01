@@ -2,18 +2,20 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BBC260A6-BF72-4B91-87AE-3958E18AFC57}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Keel</RootNamespace>
-    <AssemblyName>Keel</AssemblyName>
+    <RootNamespace>KeelConsole</RootNamespace>
+    <AssemblyName>KeelConsole</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,7 +24,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -40,33 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builtins\Builtin.cs" />
-    <Compile Include="Builtins\Car.cs" />
-    <Compile Include="Builtins\Cdr.cs" />
-    <Compile Include="Builtins\Cons.cs" />
-    <Compile Include="DefaultEnvironment.cs" />
-    <Compile Include="DefaultSymbols.cs" />
-    <Compile Include="Objects\Cons.cs" />
-    <Compile Include="Objects\LispEnvironment.cs" />
-    <Compile Include="Objects\Function.cs" />
-    <Compile Include="Objects\Lambda.cs" />
-    <Compile Include="Objects\LispNull.cs" />
-    <Compile Include="Objects\LispObject.cs" />
-    <Compile Include="ListEnumerator.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reader.cs" />
-    <Compile Include="Repl.cs" />
-    <Compile Include="SpecialForms\Define.cs" />
-    <Compile Include="SpecialForms\Defun.cs" />
-    <Compile Include="SpecialForms\If.cs" />
-    <Compile Include="SpecialForms\LambdaForm.cs" />
-    <Compile Include="SpecialForms\Progn.cs" />
-    <Compile Include="SpecialForms\Quote.cs" />
-    <Compile Include="SpecialForms\SpecialForm.cs" />
-    <Compile Include="Objects\Symbol.cs" />
-    <Compile Include="SymbolsTable.cs" />
-    <Compile Include="Tokenizer.cs" />
-    <Compile Include="WhiteSpace.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Keel\Keel.csproj">
+      <Project>{BBC260A6-BF72-4B91-87AE-3958E18AFC57}</Project>
+      <Name>Keel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

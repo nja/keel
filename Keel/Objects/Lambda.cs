@@ -20,7 +20,12 @@ namespace Keel.Objects
             LispEnvironment lambdaEnv = new LispEnvironment(env);
             lambdaEnv.Extend(Arguments, argumentValues);
 
-            return env.Eval(body);
+            return lambdaEnv.Eval(body);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("(lambda ({0}) ...)", string.Join(" ", Arguments));
         }
     }
 }

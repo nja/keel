@@ -79,5 +79,10 @@ namespace Keel.Objects
         }
 
         #endregion
+
+        public override string ToString()
+        {
+            return string.Format("({0} . {1})", Car.ToString(), Cdr.ToString());
+        }
     }
 }

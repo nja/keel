@@ -45,6 +45,8 @@ namespace Keel.Objects
             this.parent = parent;
         }
 
+        public bool IsRoot { get { return parent == NoParent; } }
+
         public LispObject LookUp(Symbol symbol)
         {
             LispObject result = null;
@@ -53,7 +55,7 @@ namespace Keel.Objects
             {
                 return result;
             }
-            else if (parent != NoParent)
+            else if (!IsRoot)
             {
                 return parent.LookUp(symbol);
             }
@@ -127,10 +129,27 @@ namespace Keel.Objects
                     throw new EvaluationException(funVal + " is not a function");
                 }
 
-                var argumentValues = ((Cons)Cdr.Of(expr)).Select(x => Eval(x));
+                var arguments = Cdr.Of(expr);
+                var argumentValues = arguments.As<Cons>().Select(car => Eval(car));
+                //var argumentValues = ((Cons)Cdr.Of(expr)).Select(x => Eval(x));
 
                 return fun.Apply(argumentValues, this);
             }
+        }
+
+        protected int Level
+        {
+            get { return IsRoot ? 0 : parent.Level + 1; }
+        }
+
+        protected int Count
+        {
+            get { return dict.Count + (IsRoot ? 0 : parent.Count); }
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Env[{0}]({1})", Level, Count);
         }
     }
 }

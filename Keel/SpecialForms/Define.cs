@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Keel.Objects;
+using Keel.Builtins;
 
 namespace Keel.SpecialForms
 {
@@ -16,8 +17,8 @@ namespace Keel.SpecialForms
 
         public override LispObject Eval(Cons body, LispEnvironment env)
         {
-            var symbol = body.Car.As<Symbol>();
-            var value = env.Eval(body.Cdr);
+            var symbol = Car.Of(body).As<Symbol>();
+            var value = env.Eval(Car.Of(Cdr.Of(body)));
 
             env.AddBinding(symbol, value);
 

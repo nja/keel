@@ -17,7 +17,7 @@ namespace Keel.SpecialForms
 
         public override LispObject Eval(Cons body, LispEnvironment env)
         {
-            return Car.Of(Cdr.Of(body));
+            return Car.Of(body);
         }
 
         public static Cons Wrap(LispObject x)

@@ -7,6 +7,7 @@ namespace Keel.Objects
 {
     public class LispNull : Cons
     {
+        public static readonly Symbol Symbol = new Symbol("NIL");
         public static readonly LispNull Nil = new LispNull();
 
         private LispNull()
@@ -22,6 +23,11 @@ namespace Keel.Objects
         {
             get { return this; }
             set { throw new InvalidOperationException(); }
+        }
+
+        public override string ToString()
+        {
+            return Symbol.Name;
         }
     }
 }
