@@ -40,10 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builtins\Add.cs" />
     <Compile Include="Builtins\Builtin.cs" />
     <Compile Include="Builtins\Car.cs" />
     <Compile Include="Builtins\Cdr.cs" />
     <Compile Include="Builtins\Cons.cs" />
+    <Compile Include="Builtins\Eq.cs" />
     <Compile Include="DefaultEnvironment.cs" />
     <Compile Include="DefaultSymbols.cs" />
     <Compile Include="Objects\Cons.cs" />

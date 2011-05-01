@@ -15,9 +15,11 @@ namespace Keel
         public DefaultSymbols()
         {
             // Builtins
+            Set(Add.Instance.Symbol);
             Set(Car.Instance.Symbol);
             Set(Cdr.Instance.Symbol);
             Set(ConsBuiltin.Instance.Symbol);
+            Set(Eq.Instance.Symbol);
             // Special forms
             Set(Define.Instance.Symbol);
             Set(Defun.Instance.Symbol);

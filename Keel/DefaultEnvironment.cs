@@ -12,9 +12,11 @@ namespace Keel
         public DefaultEnvironment()
         {
             // Builtins
+            AddBinding(Add.Instance.Symbol, Add.Instance);
             AddBinding(Car.Instance.Symbol, Car.Instance);
             AddBinding(Cdr.Instance.Symbol, Cdr.Instance);
             AddBinding(ConsBuiltin.Instance.Symbol, ConsBuiltin.Instance);
+            AddBinding(Eq.Instance.Symbol, Eq.Instance);
             // Constants
             AddBinding(LispNull.Symbol, LispNull.Nil);
             AddBinding(DefaultSymbols.T, DefaultSymbols.T);
