@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Keel.SpecialForms;
+using Keel.Builtins;
 
-namespace Keel
+namespace Keel.Objects
 {
     public class EnvironmentException : Exception
     {
@@ -27,18 +29,18 @@ namespace Keel
         { }
     }
 
-    public class Environment
+    public class LispEnvironment : LispObject
     {
-        static readonly Environment NoParent = new Environment(null);
+        static readonly LispEnvironment NoParent = new LispEnvironment(null);
 
-        private readonly Environment parent;
+        private readonly LispEnvironment parent;
         private readonly Dictionary<Symbol, LispObject> dict = new Dictionary<Symbol, LispObject>();
 
-        public Environment()
+        public LispEnvironment()
             : this(NoParent)
         { }
 
-        public Environment(Environment parent)
+        public LispEnvironment(LispEnvironment parent)
         {
             this.parent = parent;
         }
@@ -103,11 +105,7 @@ namespace Keel
 
         public LispObject Eval(LispObject expr)
         {
-            if (expr.IsNil)
-            {
-                return LispNull.Nil;
-            }
-            else if (expr is Symbol)
+            if (expr is Symbol)
             {
                 return LookUp((Symbol)expr);
             }
@@ -115,41 +113,24 @@ namespace Keel
             {
                 return expr;
             }
+            else if (SpecialForm.IsSpecial((Cons)expr))
+            {
+                return SpecialForm.EvalForm((Cons)expr, this);
+            }
             else
             {
-                Cons cons = (Cons)expr;
+                var funVal = Eval(Car.Of(expr));
+                Function fun = funVal as Function;
 
-                if (cons.Car is Symbol && SpecialForm.IsSpecial((Symbol)cons.Car))
+                if (fun == null)
                 {
-                    return EvalSpecial(cons);
+                    throw new EvaluationException(funVal + " is not a function");
                 }
-                else
-                {
-                    return EvalFunction(cons);
-                }
+
+                var argumentValues = ((Cons)Cdr.Of(expr)).Select(x => Eval(x));
+
+                return fun.Apply(argumentValues, this);
             }
-        }
-
-        private LispObject EvalFunction(Cons cons)
-        {
-            Function fun = Eval(cons.Car) as Function;
-
-            if (fun == null)
-            {
-                throw new EvaluationException(cons.Car + " is not a function");
-            }
-
-            var argumentValues = ((Cons)cons.Cdr).Select(x => Eval(x));
-                
-            Environment env = new Environment(this);
-            env.Extend(fun.Arguments, argumentValues);
-
-            return fun.Apply(env);
-        }
-
-        private LispObject EvalSpecial(Cons cons)
-        {
-            return SpecialForm.Eval((Symbol)cons.Car, (Cons)cons.Cdr, this);
         }
     }
 }

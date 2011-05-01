@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Keel.Objects;
 
 namespace Keel
 {
@@ -45,10 +46,24 @@ namespace Keel
             {
                 throw new ReaderException("Unbalanced parens");
             }
+            else if (QuotesNext(tokens.Current))
+            {
+                tokens.MoveNext();
+                
+                var quote = symbols.Intern("QUOTE");
+                var next = Read(tokens, symbols);
+
+                return Cons.ToList(new LispObject[] { quote, next });
+            }
             else
             {
                 return ReadAtom(tokens, symbols);
             }
+        }
+
+        private bool QuotesNext(Token token)
+        {
+            return token.Name == "'";
         }
 
         private bool OpensList(Token token)

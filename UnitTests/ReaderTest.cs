@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Keel;
 using NUnit.Framework;
+using Keel.Objects;
+using Keel.Builtins;
 
 namespace UnitTests
 {
@@ -115,18 +117,18 @@ namespace UnitTests
             Assert.AreEqual(1, result.Count);
 
             var list = (Cons)result[0];
-            var car = (Symbol)list.Car;
+            var car = (Symbol)Car.Of(list);
             Assert.That(car.SameName("a"));
 
-            var cdr = (Cons)list.Cdr; // (((b)) ())
-            var cadr = (Cons)cdr.Car; // ((b))
+            var cdr = Cdr.Of(list); // (((b)) ())
+            var cadr = (Cons)Car.Of(cdr); // ((b))
             Assert.That(cadr.Cdr.IsNil);
-            var caadr = (Cons)cadr.Car; // (b)
+            var caadr = (Cons)Car.Of(cadr); // (b)
             Assert.That(caadr.Cdr.IsNil);
-            var caaadr = (Symbol)caadr.Car; // b
+            var caaadr = (Symbol)Car.Of(caadr); // b
             Assert.That(caaadr.SameName("b"));
 
-            var cddr = (Cons)cdr.Cdr; // (())
+            var cddr = (Cons)Cdr.Of(cdr); // (())
             Assert.That(cddr.Car.IsNil);
             Assert.That(cddr.Cdr.IsNil);
         }
@@ -164,6 +166,25 @@ namespace UnitTests
 
             var result = reader.Read(tokens, symbols);
             Assert.AreSame(result[0], result[1]);
+        }
+
+        [Test]
+        public void TickQuoteAtomTest()
+        {
+            var symbols = new SymbolsTable();
+            var reader = new Reader();
+
+            var name = "quoted";
+            var tokens = new Token[] { new Token("'"), new Token(name) };
+
+            var result = reader.Read(tokens, symbols);
+            Assert.AreEqual(1, result.Count);
+            
+            var quote = (Symbol)Car.Of(result[0]);
+            var quoted = (Symbol)Car.Of(Cdr.Of(result[0]));
+            
+            Assert.That(quote.SameName("quote"));
+            Assert.That(quoted.SameName(name));
         }
     }
 }

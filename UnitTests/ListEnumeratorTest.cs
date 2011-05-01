@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Keel;
 using NUnit.Framework;
+using Keel.Objects;
 
 namespace UnitTests
 {
