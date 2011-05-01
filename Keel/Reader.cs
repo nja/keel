@@ -21,16 +21,36 @@ namespace Keel
     {
         public IList<LispObject> Read(IEnumerable<Token> tokens, SymbolsTable symbols)
         {
-            var result = new List<LispObject>();
+            IList<LispObject> result;
+
+            if (!TryRead(tokens, symbols, out result))
+            {
+                throw new ReaderException("Unbalanced parens");
+            }
+
+            return result;
+        }
+
+        public bool TryRead(IEnumerable<Token> tokens, SymbolsTable symbols, out IList<LispObject> result)
+        {
+            result = new List<LispObject>();
 
             var enumerator = tokens.GetEnumerator();
 
             while (enumerator.MoveNext())
             {
-                result.Add(Read(enumerator, symbols));
+                LispObject next;
+                if (TryRead(enumerator, symbols, out next))
+                {
+                    result.Add(next);
+                }
+                else
+                {
+                    return false;
+                }
             }
 
-            return result;
+            return true;
         }
 
         /// <summary>
@@ -38,9 +58,25 @@ namespace Keel
         /// </summary>
         public LispObject Read(IEnumerator<Token> tokens, SymbolsTable symbols)
         {
+            LispObject result;
+
+            if (!TryRead(tokens, symbols, out result))
+            {
+                throw new ReaderException("Unbalanced parens");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Tries to read the next form. Returns false when a complete form wasn't read.
+        /// Assumes tokens.Current is available.
+        /// </summary>
+        public bool TryRead(IEnumerator<Token> tokens, SymbolsTable symbols, out LispObject result)
+        {
             if (OpensList(tokens.Current))
             {
-                return ReadList(tokens, symbols);
+                return TryReadList(tokens, symbols, out result);
             }
             else if (ClosesList(tokens.Current))
             {
@@ -53,11 +89,13 @@ namespace Keel
                 var quote = symbols.Intern("QUOTE");
                 var next = Read(tokens, symbols);
 
-                return Cons.ToList(new LispObject[] { quote, next });
+                result = Cons.ToList(new LispObject[] { quote, next });
+                return true;
             }
             else
             {
-                return ReadAtom(tokens, symbols);
+                result = ReadAtom(tokens, symbols);
+                return true;
             }
         }
 
@@ -79,7 +117,7 @@ namespace Keel
         /// <summary>
         /// Assumes the enumerator is advanced to the opening paren.
         /// </summary>
-        public LispObject ReadList(IEnumerator<Token> tokens, SymbolsTable symbols)
+        public bool TryReadList(IEnumerator<Token> tokens, SymbolsTable symbols, out LispObject result)
         {
             if (!OpensList(tokens.Current))
             {
@@ -95,12 +133,14 @@ namespace Keel
                 {
                     if (previousCons == null)
                     {
-                        return LispNull.Nil;
+                        result = LispNull.Nil;
                     }
                     else
                     {
-                        return firstCons;
+                        result = firstCons;
                     }
+
+                    return true;
                 }
 
                 Cons cons = new Cons();
@@ -116,7 +156,8 @@ namespace Keel
                 previousCons = cons;
             }
 
-            throw new ReaderException("Unbalanced parens");
+            result = LispNull.Nil;
+            return false;
         }
 
         private LispObject ReadAtom(IEnumerator<Token> tokens, SymbolsTable symbols)

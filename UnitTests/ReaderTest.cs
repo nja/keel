@@ -136,16 +136,23 @@ namespace UnitTests
         [TestCase("(")]
         [TestCase(")")]
         [ExpectedException(typeof(ReaderException))]
-        public void UnbalancedExceptionTest(string tokenName)
+        public void ReadUnbalancedExceptionTest(string tokenName)
         {
-            UnbalancedExceptionTest(new string[] { tokenName });
+            ReadUnbalancedExceptionTest(new string[] { tokenName });
+        }
+
+        [TestCase(")")]
+        [ExpectedException(typeof(ReaderException))]
+        public void TryReadUnbalancedExceptionTest(string tokenName)
+        {
+            TryReadUnbalancedExceptionTest(new string[] { tokenName });
         }
 
         [TestCase("(", "a")]
         [TestCase("(", "a", "(", ")")]
         [TestCase("(", "a", ")", ")")]
         [ExpectedException(typeof(ReaderException))]
-        public void UnbalancedExceptionTest(params string[] tokenNames)
+        public void ReadUnbalancedExceptionTest(params string[] tokenNames)
         {
             var symbols = new SymbolsTable();
             var reader = new Reader();
@@ -153,6 +160,19 @@ namespace UnitTests
             var tokens = tokenNames.Select(s => new Token(s)).ToList<Token>();
 
             reader.Read(tokens, symbols);
+        }
+
+        [TestCase("(", "a", ")", ")")]
+        [ExpectedException(typeof(ReaderException))]
+        public void TryReadUnbalancedExceptionTest(params string[] tokenNames)
+        {
+            var symbols = new SymbolsTable();
+            var reader = new Reader();
+
+            var tokens = tokenNames.Select(s => new Token(s)).ToList<Token>();
+
+            IList<LispObject> result;
+            reader.TryRead(tokens, symbols, out result);
         }
 
         [Test]
