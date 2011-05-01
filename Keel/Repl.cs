@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using Keel.Objects;
+using Keel.Builtins;
 
 namespace Keel
 {
@@ -83,7 +84,12 @@ namespace Keel
                     {
                         var results = forms.Select(f => environment.Eval(f)).ToList();
 
-                        output.WriteLine(string.Join(output.NewLine, results.Select(r => Result + r.ToString())));
+                        foreach (var r in results)
+                        {
+                            Console.Write(Result);
+                            Print.PrintObject(r);
+                            Console.WriteLine();
+                        }
                     }
                     catch (Exception evalEx)
                     {

@@ -17,6 +17,7 @@ namespace Keel
             AddBinding(Cdr.Instance.Symbol, Cdr.Instance);
             AddBinding(ConsBuiltin.Instance.Symbol, ConsBuiltin.Instance);
             AddBinding(Eq.Instance.Symbol, Eq.Instance);
+            AddBinding(Print.Instance.Symbol, Print.Instance);
             // Constants
             AddBinding(LispNull.Symbol, LispNull.Nil);
             AddBinding(DefaultSymbols.T, DefaultSymbols.T);

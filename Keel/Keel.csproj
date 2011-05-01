@@ -46,6 +46,7 @@
     <Compile Include="Builtins\Cdr.cs" />
     <Compile Include="Builtins\Cons.cs" />
     <Compile Include="Builtins\Eq.cs" />
+    <Compile Include="Builtins\Print.cs" />
     <Compile Include="DefaultEnvironment.cs" />
     <Compile Include="DefaultSymbols.cs" />
     <Compile Include="Library.cs" />

@@ -20,6 +20,7 @@ namespace Keel
             Set(Cdr.Instance.Symbol);
             Set(ConsBuiltin.Instance.Symbol);
             Set(Eq.Instance.Symbol);
+            Set(Print.Instance.Symbol);
             // Special forms
             Set(Define.Instance.Symbol);
             Set(Defun.Instance.Symbol);
