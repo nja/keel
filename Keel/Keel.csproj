@@ -50,6 +50,7 @@
     <Compile Include="Objects\LispEnvironment.cs" />
     <Compile Include="Objects\Function.cs" />
     <Compile Include="Objects\Lambda.cs" />
+    <Compile Include="Objects\LispInteger.cs" />
     <Compile Include="Objects\LispNull.cs" />
     <Compile Include="Objects\LispObject.cs" />
     <Compile Include="ListEnumerator.cs" />

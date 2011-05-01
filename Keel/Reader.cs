@@ -162,7 +162,16 @@ namespace Keel
 
         private LispObject ReadAtom(IEnumerator<Token> tokens, SymbolsTable symbols)
         {
-            return symbols.Intern(tokens.Current.Name);
+            int intValue;
+
+            if (int.TryParse(tokens.Current.Name, out intValue))
+            {
+                return new LispInteger(intValue);
+            }
+            else
+            {
+                return symbols.Intern(tokens.Current.Name);
+            }
         }
     }
 }
