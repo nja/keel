@@ -9,13 +9,20 @@ namespace Keel.SpecialForms
 {
     public class Quote : SpecialForm
     {
-        public Quote()
+        public static Quote Instance = new Quote();
+
+        private Quote()
             : base("QUOTE")
         { }
 
         public override LispObject Eval(Cons body, LispEnvironment env)
         {
             return Car.Of(Cdr.Of(body));
+        }
+
+        public static Cons Wrap(LispObject x)
+        {
+            return Cons.ToList(new LispObject[] { Quote.Instance.Symbol, x });
         }
     }
 }

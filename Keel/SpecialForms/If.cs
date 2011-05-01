@@ -9,7 +9,7 @@ namespace Keel.SpecialForms
 {
     public class If : SpecialForm
     {
-        public static If IfForm = new If();
+        public static If Instance = new If();
 
         private If()
             : base("IF")

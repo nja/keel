@@ -21,5 +21,17 @@ namespace Keel.Objects
         {
             get { return true; }
         }
+
+        public LO As<LO>() where LO : LispObject
+        {
+            LO lo = this as LO;
+
+            if (lo == null)
+            {
+                throw new FunctionException(this + " is not of type " + typeof(LO).Name);
+            }
+
+            return lo;
+        }
     }
 }

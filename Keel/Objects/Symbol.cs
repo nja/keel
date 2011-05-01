@@ -14,6 +14,8 @@ namespace Keel.Objects
             this.name = name;
         }
 
+        public string Name { get { return name; } }
+
         public override string ToString()
         {
             return name;

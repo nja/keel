@@ -19,9 +19,7 @@ namespace Keel.Builtins
 
         public static LispObject Of(LispObject x)
         {
-            Cons cons = Assert<Cons>(x);
-
-            return cons.Cdr;
+            return x.As<Cons>().Cdr;
         }
     }
 }

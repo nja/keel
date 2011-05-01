@@ -16,15 +16,17 @@ namespace Keel.SpecialForms
 
     public abstract class SpecialForm
     {
+        protected readonly Symbol Symbol;
         private static Dictionary<Symbol, SpecialForm> specials = new Dictionary<Symbol, SpecialForm>();
-
+        
         protected SpecialForm(Symbol symbol)
         {
+            this.Symbol = symbol;
             specials.Add(symbol, this);
         }
 
         protected SpecialForm(string symbolName)
-            : this(new Symbol(symbolName))
+            : this(new Symbol(Symbol.Canonicalize(symbolName)))
         { }
 
         public static bool IsSpecial(Cons form)

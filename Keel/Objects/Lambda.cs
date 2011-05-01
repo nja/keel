@@ -9,8 +9,8 @@ namespace Keel.Objects
     {
         private readonly Cons body;
 
-        public Lambda(Cons args, Cons body)
-            : base(args.Select(car => Assert<Symbol>(car)), body)
+        public Lambda(Cons lambdaList, Cons body)
+            : base(lambdaList.Select(car => car.As<Symbol>()), body)
         {
             this.body = body;
         }
