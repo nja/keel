@@ -44,6 +44,8 @@
     <Compile Include="Builtins\Car.cs" />
     <Compile Include="Builtins\Cdr.cs" />
     <Compile Include="Builtins\Cons.cs" />
+    <Compile Include="DefaultEnvironment.cs" />
+    <Compile Include="DefaultSymbols.cs" />
     <Compile Include="Objects\Cons.cs" />
     <Compile Include="Objects\LispEnvironment.cs" />
     <Compile Include="Objects\Function.cs" />

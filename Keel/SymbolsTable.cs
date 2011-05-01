@@ -29,5 +29,10 @@ namespace Keel
         {
             return symbols.TryGetValue(Symbol.Canonicalize(name), out symbol);
         }
+
+        protected void Set(Symbol symbol)
+        {
+            symbols[symbol.Name] = symbol;
+        }
     }
 }

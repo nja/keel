@@ -16,7 +16,7 @@ namespace Keel.SpecialForms
 
     public abstract class SpecialForm
     {
-        protected readonly Symbol Symbol;
+        public readonly Symbol Symbol;
         private static Dictionary<Symbol, SpecialForm> specials = new Dictionary<Symbol, SpecialForm>();
         
         protected SpecialForm(Symbol symbol)
