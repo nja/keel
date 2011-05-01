@@ -48,6 +48,7 @@
     <Compile Include="Builtins\Eq.cs" />
     <Compile Include="DefaultEnvironment.cs" />
     <Compile Include="DefaultSymbols.cs" />
+    <Compile Include="Library.cs" />
     <Compile Include="Objects\Cons.cs" />
     <Compile Include="Objects\LispEnvironment.cs" />
     <Compile Include="Objects\Function.cs" />

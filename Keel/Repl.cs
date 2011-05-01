@@ -24,8 +24,18 @@ namespace Keel
 
         public Repl(TextReader input, TextWriter output)
         {
+            InitLibrary();
+
             this.input = input;
             this.output = output;
+        }
+
+        private void InitLibrary()
+        {
+            foreach (var form in reader.Read(Library.Text, symbols))
+            {
+                environment.Eval(form);
+            }
         }
 
         public void Loop()
