@@ -9,7 +9,7 @@ namespace Keel.SpecialForms
 {
     public class Quote : SpecialForm
     {
-        public static Quote Instance = new Quote();
+        public static readonly Quote Instance = new Quote();
 
         private Quote()
             : base("QUOTE")

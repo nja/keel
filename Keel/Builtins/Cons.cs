@@ -8,6 +8,8 @@ namespace Keel.Builtins
 {
     public class ConsBuiltin : Builtin
     {
+        public static readonly ConsBuiltin Instance = new ConsBuiltin();
+
         public ConsBuiltin()
             : base("CONS", "X", "Y")
         { }

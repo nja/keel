@@ -8,7 +8,7 @@ namespace Keel.SpecialForms
 {
     public class LambdaForm : SpecialForm
     {
-        public static LambdaForm Instance = new LambdaForm();
+        public static readonly LambdaForm Instance = new LambdaForm();
 
         private LambdaForm()
             : base("LAMBDA")

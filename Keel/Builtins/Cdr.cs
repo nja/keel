@@ -8,7 +8,9 @@ namespace Keel.Builtins
 {
     public class Cdr : Builtin
     {
-        public Cdr()
+        public static readonly Cdr Instance = new Cdr();
+
+        private Cdr()
             : base("CDR", "X")
         { }
 

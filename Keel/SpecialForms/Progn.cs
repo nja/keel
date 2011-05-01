@@ -8,7 +8,7 @@ namespace Keel.SpecialForms
 {
     public class Progn : SpecialForm
     {
-        public static Progn Instance = new Progn();
+        public static readonly Progn Instance = new Progn();
 
         private Progn()
             : base("PROGN")
