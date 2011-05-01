@@ -25,6 +25,11 @@ namespace Keel.Objects
             set { throw new InvalidOperationException(); }
         }
 
+        public override bool IsAtom
+        {
+            get { return true; }
+        }
+
         public override string ToString()
         {
             return Symbol.Name;
