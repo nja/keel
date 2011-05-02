@@ -14,9 +14,9 @@ namespace Keel.Builtins
             : base("CAR", "X")
         { }
 
-        protected override LispObject Apply(LispEnvironment env, LispObject[] args)
+        public override LispObject Apply(Cons argumentValues, LispEnvironment env)
         {
-            return Car.Of(args[0]);
+            return Car.Of(argumentValues.Car);
         }
 
         public static LispObject Of(LispObject x)

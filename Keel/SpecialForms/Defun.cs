@@ -18,7 +18,7 @@ namespace Keel.SpecialForms
         public override LispObject Eval(Cons defunBody, LispEnvironment env)
         {
             var symbol = Car.Of(defunBody).As<Symbol>();
-            var lambdaList = Car.Of(Cdr.Of(defunBody)).As<Cons>();
+            var lambdaList = Car.Of(Cdr.Of(defunBody));
             var lambdaBody = Cdr.Of(Cdr.Of(defunBody)).As<Cons>();
             var progn = Progn.Wrap(lambdaBody);
 

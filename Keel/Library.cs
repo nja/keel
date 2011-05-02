@@ -14,6 +14,8 @@ namespace Keel
   (if (null lst)
       0
       (+ 1 (length (cdr lst)))))
+
+(defun list x x)
 ";
     }
 }

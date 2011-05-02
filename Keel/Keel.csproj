@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builtins\Add.cs" />
+    <Compile Include="Builtins\Apply.cs" />
     <Compile Include="Builtins\Builtin.cs" />
     <Compile Include="Builtins\Car.cs" />
     <Compile Include="Builtins\Cdr.cs" />

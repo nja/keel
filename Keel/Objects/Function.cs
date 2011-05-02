@@ -14,18 +14,18 @@ namespace Keel.Objects
 
     public abstract class Function : LispObject
     {
-        private readonly Symbol[] args;
+        private readonly LispObject args;
         private readonly Cons body;
 
-        public Function(IEnumerable<Symbol> args, Cons body)
+        public Function(LispObject args, Cons body)
         {
-            this.args = args.ToArray();
+            this.args = args;
             this.body = body;
         }
 
-        public abstract LispObject Apply(IEnumerable<LispObject> arguments, LispEnvironment env);
+        public abstract LispObject Apply(Cons arguments, LispEnvironment env);
 
-        public IEnumerable<Symbol> Arguments
+        public LispObject Arguments
         {
             get { return args; }
         }

@@ -16,6 +16,7 @@ namespace Keel
         {
             // Builtins
             Set(Add.Instance.Symbol);
+            Set(ApplyBuiltin.Instance.Symbol);
             Set(Car.Instance.Symbol);
             Set(Cdr.Instance.Symbol);
             Set(ConsBuiltin.Instance.Symbol);

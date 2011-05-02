@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplyBuiltinTest.cs" />
     <Compile Include="ListEnumeratorTest.cs" />
     <Compile Include="ReaderTest.cs" />
     <Compile Include="TokenizerTest.cs" />

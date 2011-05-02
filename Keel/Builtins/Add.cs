@@ -14,11 +14,11 @@ namespace Keel.Builtins
             : base("+")
         { }
 
-        protected override LispObject Apply(LispEnvironment env, LispObject[] args)
+        public override LispObject Apply(Cons argumentsValues, LispEnvironment env)
         {
             int sum = 0;
 
-            foreach (var addend in args)
+            foreach (var addend in argumentsValues)
             {
                 var integer = addend.As<LispInteger>();
                 sum += integer.Value;

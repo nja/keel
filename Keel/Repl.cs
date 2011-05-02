@@ -87,8 +87,7 @@ namespace Keel
                         foreach (var r in results)
                         {
                             Console.Write(Result);
-                            Print.PrintObject(r);
-                            Console.WriteLine();
+                            Console.WriteLine(Print.PrintObject(r));
                         }
                     }
                     catch (Exception evalEx)

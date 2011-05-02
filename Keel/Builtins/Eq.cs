@@ -14,10 +14,10 @@ namespace Keel.Builtins
             : base("EQ", "X", "Y")
         { }
 
-        protected override LispObject Apply(LispEnvironment env, LispObject[] args)
+        public override LispObject Apply(Cons argumentValues, LispEnvironment env)
         {
-            var x = args[0];
-            var y = args[1];
+            var x = Car.Of(argumentValues);
+            var y = Car.Of(Cdr.Of(argumentValues));
 
             if (x == y)
             {

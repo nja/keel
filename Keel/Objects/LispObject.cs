@@ -5,6 +5,13 @@ using System.Text;
 
 namespace Keel.Objects
 {
+    public class TypeException : Exception
+    {
+        public TypeException(string msg)
+            : base(msg)
+        { }
+    }
+
     public class LispObject
     {
         public bool IsNil
@@ -28,7 +35,7 @@ namespace Keel.Objects
 
             if (lo == null)
             {
-                throw new FunctionException(this + " is not of type " + typeof(LO).Name);
+                throw new TypeException(this + " is not of type " + typeof(LO).Name);
             }
 
             return lo;

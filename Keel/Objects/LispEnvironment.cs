@@ -89,6 +89,35 @@ namespace Keel.Objects
             }
         }
 
+        public void Extend(LispObject lambdaList, Cons values)
+        {
+            if (lambdaList.IsNil)
+            {
+                if (values.IsNil)
+                {
+                    return;
+                }
+                else
+                {
+                    throw new EnvironmentException("Too many values when extending environment");
+                }
+            }
+            else if (lambdaList.IsAtom)
+            {
+                AddBinding(lambdaList.As<Symbol>(), values);
+            }
+            else
+            {
+                if (values.IsNil)
+                {
+                    throw new EnvironmentException("Too few values when extending environment");
+                }
+
+                AddBinding(Car.Of(lambdaList).As<Symbol>(), values.Car);
+                Extend(Cdr.Of(lambdaList), values.Cdr.As<Cons>());
+            }
+        }
+
         public void Extend(IEnumerable<Symbol> symbolsEnum, IEnumerable<LispObject> valuesEnum)
         {
             var symbols = symbolsEnum.ToList();
@@ -130,7 +159,7 @@ namespace Keel.Objects
                 }
 
                 var arguments = Cdr.Of(expr);
-                var argumentValues = arguments.As<Cons>().Select(car => Eval(car));
+                var argumentValues = Cons.ToList(arguments.As<Cons>().Select(car => Eval(car)));
 
                 return fun.Apply(argumentValues, this);
             }

@@ -11,18 +11,17 @@ namespace Keel.Builtins
         public readonly Symbol Symbol;
         
         public Builtin(string name, params string[] args)
-            : base(args.Select(s => new Symbol(s)), LispNull.Nil)
+            : base(Cons.ToList(args.Select(s => new Symbol(s))), LispNull.Nil)
         {
             this.Symbol = new Symbol(Symbol.Canonicalize(name));
         }
 
-        public string Name { get { return Symbol.Name; } }
-
-        public override LispObject Apply(IEnumerable<LispObject> argumentValues, LispEnvironment env)
+        public Builtin(string name, object rest, params string[] args)
+            : base(Cons.ToDottedList(args.Select(s => new Symbol(s))), LispNull.Nil)
         {
-            return Apply(env, argumentValues.ToArray());
+            throw new NotImplementedException();
         }
 
-        protected abstract LispObject Apply(LispEnvironment env, LispObject[] args);
+        public string Name { get { return Symbol.Name; } }
     }
 }

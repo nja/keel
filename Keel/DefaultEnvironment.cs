@@ -13,6 +13,7 @@ namespace Keel
         {
             // Builtins
             AddBinding(Add.Instance.Symbol, Add.Instance);
+            AddBinding(ApplyBuiltin.Instance.Symbol, ApplyBuiltin.Instance);
             AddBinding(Car.Instance.Symbol, Car.Instance);
             AddBinding(Cdr.Instance.Symbol, Cdr.Instance);
             AddBinding(ConsBuiltin.Instance.Symbol, ConsBuiltin.Instance);

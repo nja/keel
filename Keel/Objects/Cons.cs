@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Keel.Builtins;
 
 namespace Keel.Objects
 {
@@ -21,28 +22,43 @@ namespace Keel.Objects
             this.cdr = cdr;
         }
 
+        public static Cons ToList(params LispObject[] elements)
+        {
+            return ToList((IEnumerable<LispObject>)elements);
+        }
+
         public static Cons ToList(IEnumerable<LispObject> elements)
         {
-            Cons prev = LispNull.Nil,
-                first = LispNull.Nil;
+            var list = elements.ToList();
+            list.Add(LispNull.Nil);
+            return (Cons)ToDottedList(list);
+        }
 
-            foreach (var e in elements)
+        public static LispObject ToDottedList(params LispObject[] elements)
+        {
+            return ToDottedList((IEnumerable<LispObject>)elements);
+        }
+
+        public static LispObject ToDottedList(IEnumerable<LispObject> elements)
+        {
+            var list = elements.ToList();
+            
+            if (list.Count == 0)
             {
-                var cons = new Cons(e, LispNull.Nil);
+                return LispNull.Nil;
+            }
+            else
+            {
+                list.Reverse();
+                LispObject cdr = list[0];
 
-                if (first == LispNull.Nil)
+                foreach (var car in list.Skip(1))
                 {
-                    first = cons;
-                } 
-                else
-                {
-                    prev.Cdr = cons;
+                    cdr = new Cons(car, cdr);
                 }
 
-                prev = cons;
+                return cdr;
             }
-
-            return first;
         }
 
         public virtual LispObject Car
@@ -82,7 +98,7 @@ namespace Keel.Objects
 
         public override string ToString()
         {
-            return string.Format("({0} . {1})", Car.ToString(), Cdr.ToString());
+            return Print.PrintObject(this);
         }
     }
 }

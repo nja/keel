@@ -9,13 +9,13 @@ namespace Keel.Objects
     {
         private readonly Cons body;
 
-        public Lambda(Cons lambdaList, Cons body)
-            : base(lambdaList.Select(car => car.As<Symbol>()), body)
+        public Lambda(LispObject lambdaList, Cons body)
+            : base(lambdaList, body)
         {
             this.body = body;
         }
 
-        public override LispObject Apply(IEnumerable<LispObject> argumentValues, LispEnvironment env)
+        public override LispObject Apply(Cons argumentValues, LispEnvironment env)
         {
             LispEnvironment lambdaEnv = new LispEnvironment(env);
             lambdaEnv.Extend(Arguments, argumentValues);

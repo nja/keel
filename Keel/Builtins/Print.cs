@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Keel.Objects;
+using System.IO;
 
 namespace Keel.Builtins
 {
@@ -14,28 +15,35 @@ namespace Keel.Builtins
             : base("PRINT", "X")
         { }
 
-        protected override LispObject Apply(LispEnvironment env, LispObject[] args)
+        public override LispObject Apply(Cons argumentValues, LispEnvironment env)
         {
-            PrintObject(args[0]);
-            return args[0];
+            Console.WriteLine(PrintObject(argumentValues.Car));
+            return argumentValues.Car;
         }
 
-        public static void PrintObject(LispObject x)
+        public static string PrintObject(LispObject x)
+        {
+            var sb = new StringBuilder();
+            PrintObject(x, sb);
+            return sb.ToString();
+        }
+
+        private static void PrintObject(LispObject x, StringBuilder output)
         {
             if (x.IsAtom)
             {
-                Console.Write(x.ToString());
+                output.Append(x.ToString());
             }
             else
             {
-                Console.Write("(");
-                PrintObject(Car.Of(x));
-                PrintCdr(Cdr.Of(x));
-                Console.Write(")");
+                output.Append("(");
+                PrintObject(Car.Of(x), output);
+                PrintCdr(Cdr.Of(x), output);
+                output.Append(")");
             }
         }
 
-        private static void PrintCdr(LispObject x)
+        private static void PrintCdr(LispObject x, StringBuilder output)
         {
             if (x.IsNil)
             {
@@ -43,13 +51,13 @@ namespace Keel.Builtins
             }
             else if (x.IsAtom)
             {
-                Console.Write(" . " + x);
+                output.Append(" . " + x);
             }
             else
             {
-                Console.Write(" ");
-                PrintObject(Car.Of(x));
-                PrintCdr(Cdr.Of(x));
+                output.Append(" ");
+                PrintObject(Car.Of(x), output);
+                PrintCdr(Cdr.Of(x), output);
             }
         }
     }

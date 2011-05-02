@@ -14,9 +14,9 @@ namespace Keel.Builtins
             : base("CONS", "X", "Y")
         { }
 
-        protected override LispObject Apply(LispEnvironment env, LispObject[] args)
+        public override LispObject Apply(Cons argumentValues, LispEnvironment env)
         {
-            return new Cons(args[0], args[1]);
+            return new Cons(Car.Of(argumentValues), Car.Of(Cdr.Of(argumentValues)));
         }
     }
 }
