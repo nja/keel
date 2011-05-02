@@ -16,8 +16,9 @@ namespace Keel
         private readonly Tokenizer tokenizer = new Tokenizer();
         private readonly Reader reader = new Reader();
         
-        private SymbolsTable symbols = new DefaultSymbols();
+        private SymbolsTable symbols;
         private LispEnvironment environment;
+        private Symbol[] stars;
 
         const string Prompt = "> ",
                  ContPrompt = "  ",
@@ -25,7 +26,10 @@ namespace Keel
 
         public Repl(TextReader input, TextWriter output)
         {
+            this.symbols = new DefaultSymbols();
             this.environment = GetLibraryEnvironment();
+
+            this.stars = InternStars();
 
             this.input = input;
             this.output = output;
@@ -51,7 +55,26 @@ namespace Keel
             var loopEnv = new LispEnvironment(environment);
             loopEnv.AddBinding(symbol, builtin);
 
+            for (int i = 0; i < stars.Length; i++)
+            {
+                loopEnv.AddBinding(stars[i], LispNull.Nil);
+            }
+
             return loopEnv;
+        }
+
+        private Symbol[] InternStars()
+        {
+            var name = "";
+            var stars = new Symbol[3];
+
+            for (int i = 0; i < stars.Length; i++)
+            {
+                name += "*";
+                stars[i] = symbols.Intern(name);
+            }
+
+            return stars;
         }
 
         public void Loop()
@@ -60,6 +83,7 @@ namespace Keel
             List<Token> unreadTokens = new List<Token>();
             bool loop = true;
             var loopEnv = GetLoopEnvironment(() => loop = false);
+            Queue<LispObject> previousResults = new Queue<LispObject>();
 
             output.Write(Prompt);
 
@@ -103,8 +127,20 @@ namespace Keel
 
                         foreach (var r in results)
                         {
+                            previousResults.Enqueue(r);
                             Console.Write(Result);
                             Console.WriteLine(Print.PrintObject(r));
+                        }
+
+                        while (previousResults.Count > stars.Length)
+                        {
+                            previousResults.Dequeue();
+                        }
+
+                        var starValues = previousResults.Reverse().ToArray();
+                        for (int i = 0; i < previousResults.Count; i++)
+                        {   
+                            loopEnv.SetValue(stars[i], starValues[i]);
                         }
                     }
                     catch (Exception evalEx)
