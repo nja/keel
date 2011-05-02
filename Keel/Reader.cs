@@ -88,10 +88,14 @@ namespace Keel
             {
                 throw new ReaderException("Unbalanced parens");
             }
+            else if (IsDot(tokens.Current))
+            {
+                throw new ReaderException("Spurious dot");
+            }
             else if (QuotesNext(tokens.Current))
             {
                 tokens.MoveNext();
-                
+
                 var quote = symbols.Intern("QUOTE");
                 var next = Read(tokens, symbols);
 
@@ -118,6 +122,11 @@ namespace Keel
         private bool ClosesList(Token token)
         {
             return token.Name == ")";
+        }
+
+        private bool IsDot(Token token)
+        {
+            return token.Name == ".";
         }
 
         /// <summary>
@@ -149,6 +158,43 @@ namespace Keel
                     return true;
                 }
 
+                if (IsDot(tokens.Current))
+                {
+                    if (previousCons == null)
+                    {
+                        throw new ReaderException("Spurious dot");
+                    }
+
+                    if (!tokens.MoveNext())
+                    {
+                        break;
+                    }
+
+                    LispObject cdr;
+
+                    if (TryRead(tokens, symbols, out cdr))
+                    {
+                        if (!tokens.MoveNext())
+                        {
+                            break;
+                        }
+
+                        if (!ClosesList(tokens.Current))
+                        {
+                            throw new ReaderException("Unbalanced parens");
+                        }
+
+                        previousCons.Cdr = cdr;
+
+                        result = firstCons;
+                        return true;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
                 Cons cons = new Cons();
                 firstCons = firstCons ?? cons;
 
@@ -157,7 +203,15 @@ namespace Keel
                     previousCons.Cdr = cons;
                 }
 
-                cons.Car = Read(tokens, symbols);
+                LispObject car;
+                if (TryRead(tokens, symbols, out car))
+                {
+                    cons.Car = car;
+                }
+                else
+                {
+                    break;
+                }
 
                 previousCons = cons;
             }

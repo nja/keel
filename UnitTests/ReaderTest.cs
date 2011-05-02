@@ -148,6 +148,16 @@ namespace UnitTests
             TryReadUnbalancedExceptionTest(new string[] { tokenName });
         }
 
+        private List<Token> GetTokens(IEnumerable<string> names)
+        {
+            return names.Select(n => new Token(n)).ToList<Token>();
+        }
+
+        private List<Token> GetTokens(params string[] names)
+        {
+            return GetTokens((IEnumerable<string>)names);
+        }
+
         [TestCase("(", "a")]
         [TestCase("(", "a", "(", ")")]
         [TestCase("(", "a", ")", ")")]
@@ -157,7 +167,7 @@ namespace UnitTests
             var symbols = new SymbolsTable();
             var reader = new Reader();
 
-            var tokens = tokenNames.Select(s => new Token(s)).ToList<Token>();
+            var tokens = GetTokens(tokenNames);
 
             reader.Read(tokens, symbols);
         }
@@ -169,7 +179,7 @@ namespace UnitTests
             var symbols = new SymbolsTable();
             var reader = new Reader();
 
-            var tokens = tokenNames.Select(s => new Token(s)).ToList<Token>();
+            var tokens = GetTokens(tokenNames);
 
             IList<LispObject> result;
             reader.TryRead(tokens, symbols, out result);
@@ -182,7 +192,7 @@ namespace UnitTests
             var reader = new Reader();
 
             var name = "foo";
-            var tokens = new Token[] { new Token(name), new Token(name) };
+            var tokens = GetTokens(name, name);
 
             var result = reader.Read(tokens, symbols);
             Assert.AreSame(result[0], result[1]);
@@ -195,7 +205,7 @@ namespace UnitTests
             var reader = new Reader();
 
             var name = "quoted";
-            var tokens = new Token[] { new Token("'"), new Token(name) };
+            var tokens = GetTokens("'", name);
 
             var result = reader.Read(tokens, symbols);
             Assert.AreEqual(1, result.Count);
@@ -205,6 +215,41 @@ namespace UnitTests
             
             Assert.That(quote.SameName("quote"));
             Assert.That(quoted.SameName(name));
+        }
+
+        [Test]
+        public void DottedConsTest()
+        {
+            var symbols = new SymbolsTable();
+            var reader = new Reader();
+
+            string carName = "car", cdrName = "cdr";
+            var tokens = GetTokens("(", carName, ".", cdrName, ")");
+
+            var result = reader.Read(tokens, symbols);
+            Assert.AreEqual(1, result.Count);
+
+            var car = (Symbol)Car.Of(result[0]);
+            var cdr = (Symbol)Cdr.Of(result[0]);
+
+            Assert.That(car.SameName(carName));
+            Assert.That(cdr.SameName(cdrName));
+        }
+
+        [TestCase("foo", ".")]
+        [TestCase("foo", ".", "bar")]
+        [TestCase("(", ".", "foo")]
+        [TestCase("foo", ".", "bar", ")")]
+        [TestCase("(", "bar", ".")]
+        [TestCase("(", "bar", ".", ")")]
+        [ExpectedException(typeof(ReaderException))]
+        public void DotExceptionTest(params string[] tokenNames)
+        {
+            var symbols = new SymbolsTable();
+            var reader = new Reader();
+
+            var tokens = GetTokens(tokenNames);
+            reader.Read(tokens, symbols);
         }
     }
 }
