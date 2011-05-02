@@ -25,7 +25,7 @@ namespace Keel.Objects
 
         public override string ToString()
         {
-            return string.Format("(lambda ({0}) ...)", string.Join(" ", Arguments));
+            return string.Format("(LAMBDA ({0}) ...)", string.Join(" ", Arguments));
         }
     }
 }
