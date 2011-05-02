@@ -17,7 +17,7 @@ namespace Keel
         private readonly Reader reader = new Reader();
         
         private SymbolsTable symbols = new DefaultSymbols();
-        private LispEnvironment environment = new DefaultEnvironment();
+        private LispEnvironment environment;
 
         const string Prompt = "> ",
                  ContPrompt = "  ",
@@ -25,28 +25,45 @@ namespace Keel
 
         public Repl(TextReader input, TextWriter output)
         {
-            InitLibrary();
+            this.environment = GetLibraryEnvironment();
 
             this.input = input;
             this.output = output;
         }
 
-        private void InitLibrary()
+        private LispEnvironment GetLibraryEnvironment()
         {
+            var libEnv = new LispEnvironment(new DefaultEnvironment());
+
             foreach (var form in reader.Read(Library.Text, symbols))
             {
-                environment.Eval(form);
+                libEnv.Eval(form);
             }
+
+            return libEnv;
+        }
+
+        private LispEnvironment GetLoopEnvironment(Action action)
+        {
+            var symbol = symbols.Intern("QUIT");
+            var builtin = new DelegateBuiltin(symbol, () => { action(); return DefaultSymbols.T; });
+
+            var loopEnv = new LispEnvironment(environment);
+            loopEnv.AddBinding(symbol, builtin);
+
+            return loopEnv;
         }
 
         public void Loop()
         {
             string line;
             List<Token> unreadTokens = new List<Token>();
+            bool loop = true;
+            var loopEnv = GetLoopEnvironment(() => loop = false);
 
             output.Write(Prompt);
 
-            while ((line = input.ReadLine()) != null)
+            while (loop && (line = input.ReadLine()) != null)
             {
                 try
                 {
@@ -82,7 +99,7 @@ namespace Keel
 
                     try
                     {
-                        var results = forms.Select(f => environment.Eval(f)).ToList();
+                        var results = forms.Select(f => loopEnv.Eval(f)).ToList();
 
                         foreach (var r in results)
                         {

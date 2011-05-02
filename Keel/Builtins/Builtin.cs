@@ -9,12 +9,16 @@ namespace Keel.Builtins
     public abstract class Builtin : Function
     {
         public readonly Symbol Symbol;
-        
-        public Builtin(string name, params string[] args)
+
+        public Builtin(Symbol symbol, params string[] args)
             : base(Cons.ToList(args.Select(s => new Symbol(s))), LispNull.Nil)
         {
-            this.Symbol = new Symbol(Symbol.Canonicalize(name));
+            this.Symbol = symbol;
         }
+
+        public Builtin(string name, params string[] args)
+            : this(new Symbol(Symbol.Canonicalize(name)), args)
+        { }
 
         public Builtin(string name, object rest, params string[] args)
             : base(Cons.ToDottedList(args.Select(s => new Symbol(s))), LispNull.Nil)
