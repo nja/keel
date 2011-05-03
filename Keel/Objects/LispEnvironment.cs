@@ -43,6 +43,11 @@ namespace Keel.Objects
         public LispEnvironment(LispEnvironment parent)
         {
             this.parent = parent;
+
+            if (Level >= 256)
+            {
+                throw new EnvironmentException("Stack overflow!");
+            }
         }
 
         public bool IsRoot { get { return parent == NoParent; } }
