@@ -22,6 +22,11 @@ namespace Keel.Objects
             this.cdr = cdr;
         }
 
+        public Cons Map(Func<LispObject, LispObject> fn)
+        {
+            return ToList(this.Select(fn));
+        }
+
         public static Cons ToList(params LispObject[] elements)
         {
             return ToList((IEnumerable<LispObject>)elements);

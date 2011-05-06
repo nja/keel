@@ -52,17 +52,29 @@ namespace Keel.Objects
 
         public bool IsRoot { get { return parent == NoParent; } }
 
+        public bool TryLookUp(Symbol symbol, out LispObject value)
+        {
+            if (dict.TryGetValue(symbol, out value))
+            {
+                return true;
+            }
+            else if (!IsRoot)
+            {
+                return parent.TryLookUp(symbol, out value);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public LispObject LookUp(Symbol symbol)
         {
             LispObject result = null;
 
-            if (dict.TryGetValue(symbol, out result))
+            if (TryLookUp(symbol, out result))
             {
                 return result;
-            }
-            else if (!IsRoot)
-            {
-                return parent.LookUp(symbol);
             }
             else
             {
@@ -153,6 +165,12 @@ namespace Keel.Objects
             {
                 return SpecialForm.EvalForm((Cons)expr, this);
             }
+            else if (IsMacro((Cons)expr))
+            {
+                Cons expansion;
+                MacroExpand.Expand((Cons)expr, this, out expansion);
+                return Eval(expansion);
+            }
             else
             {
                 var funVal = Eval(Car.Of(expr));
@@ -183,6 +201,14 @@ namespace Keel.Objects
         public override string ToString()
         {
             return string.Format("Env[{0}]({1})", Level, Count);
+        }
+
+        public bool IsMacro(Cons form)
+        {
+            LispObject carValue;
+            return form.Car is Symbol
+                && TryLookUp((Symbol)form.Car, out carValue)
+                && carValue is Macro;
         }
     }
 }
