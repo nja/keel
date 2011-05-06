@@ -24,6 +24,15 @@ namespace Keel
 
 (defun caar (x) (car (car x)))
 (defun cadr (x) (car (cdr x)))
+(defun cdar (x) (cdr (car x)))
+(defun caaar (x) (car (car (car x))))
+(defun cdaar (x) (cdr (car (car x))))
+
+(defmacro cond args
+  (when (car args)
+    (list 'if (caaar args)
+          (cons 'progn (cdaar args))
+          (cons 'cond (list (cdar args))))))
 
 (defun reverse (lst)
   (defun recur (acc lst)
@@ -58,6 +67,15 @@ namespace Keel
       nil
       (cons (apply fn (cars))
             (apply map fn (cdrs)))))
+
+(defmacro when (test body)
+  (list 'if test
+        body
+        nil))
+
+(defmacro unless (test body)
+  (list 'when (list 'not test)
+        body))
 
 ";
     }
