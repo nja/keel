@@ -48,6 +48,7 @@
     <Compile Include="Builtins\Cons.cs" />
     <Compile Include="Builtins\DelegateBuiltin.cs" />
     <Compile Include="Builtins\Eq.cs" />
+    <Compile Include="Builtins\Eval.cs" />
     <Compile Include="Builtins\MacroExpand.cs" />
     <Compile Include="Builtins\Print.cs" />
     <Compile Include="DefaultEnvironment.cs" />
