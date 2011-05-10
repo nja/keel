@@ -13,7 +13,7 @@ namespace Keel.Builtins
 
         public Macro(LispObject lambdaList, Cons macroBody, LispEnvironment macroEnv)
         {
-            this.expander = new Lambda(lambdaList, macroBody);
+            this.expander = new Lambda(lambdaList, macroBody, macroEnv);
             this.macroEnv = macroEnv;
         }
 

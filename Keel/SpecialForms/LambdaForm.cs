@@ -19,7 +19,7 @@ namespace Keel.SpecialForms
             var lambdaList = body.Car.As<Cons>();
             var progn = Progn.Wrap(body.Cdr.As<Cons>());
 
-            return new Lambda(lambdaList, progn);
+            return new Lambda(lambdaList, progn, env);
         }
     }
 }

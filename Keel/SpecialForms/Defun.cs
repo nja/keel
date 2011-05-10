@@ -22,7 +22,7 @@ namespace Keel.SpecialForms
             var lambdaBody = Cdr.Of(Cdr.Of(defunBody)).As<Cons>();
             var progn = Progn.Wrap(lambdaBody);
 
-            var lambda = new Lambda(lambdaList, progn);
+            var lambda = new Lambda(lambdaList, progn, env);
 
             env.AddBinding(symbol, lambda);
 
