@@ -8,9 +8,7 @@ namespace Keel.Builtins
 {
     public class EvalBuiltin : Builtin
     {
-        public static readonly EvalBuiltin Instance = new EvalBuiltin();
-
-        private EvalBuiltin()
+        public EvalBuiltin()
             : base("EVAL", "FORM")
         { }
 

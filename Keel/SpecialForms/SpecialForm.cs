@@ -16,42 +16,14 @@ namespace Keel.SpecialForms
 
     public abstract class SpecialForm
     {
-        public readonly Symbol Symbol;
-        private static Dictionary<Symbol, SpecialForm> specials = new Dictionary<Symbol, SpecialForm>();
+        private readonly string name;
         
-        protected SpecialForm(Symbol symbol)
+        protected SpecialForm(string name)
         {
-            this.Symbol = symbol;
-            specials.Add(symbol, this);
+            this.name = name;
         }
 
-        protected SpecialForm(string symbolName)
-            : this(new Symbol(Symbol.Canonicalize(symbolName)))
-        { }
-
-        public static bool IsSpecial(Cons form)
-        {
-            var car = Car.Of(form);
-            var cdr = Cdr.Of(form);
-            
-            return car is Symbol 
-                && cdr is Cons
-                && specials.ContainsKey((Symbol)car);
-        }
-
-        public static LispObject EvalForm(Cons form, LispEnvironment env)
-        {
-            if (!IsSpecial(form))
-            {
-                throw new SpecialFormException(form + " is not a special form");
-            }
-
-            var specialSymbol = (Symbol)Car.Of(form);
-            var special = specials[specialSymbol];
-            var body = (Cons)Cdr.Of(form);
-
-            return special.Eval(body, env);
-        }
+        public string Name { get { return name; } }
 
         public abstract LispObject Eval(Cons body, LispEnvironment env);
     }

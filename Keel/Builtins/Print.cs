@@ -9,9 +9,7 @@ namespace Keel.Builtins
 {
     public class Print : Builtin
     {
-        public static readonly Print Instance = new Print();
-
-        private Print()
+        public Print()
             : base("PRINT", "X")
         { }
 

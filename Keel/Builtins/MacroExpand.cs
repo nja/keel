@@ -31,9 +31,7 @@ namespace Keel.Builtins
 
     public class MacroExpand : Builtin
     {
-        public static readonly MacroExpand Instance = new MacroExpand();
-
-        private MacroExpand()
+        public MacroExpand()
             : base("MACROEXPAND", "FORM")
         { }
 

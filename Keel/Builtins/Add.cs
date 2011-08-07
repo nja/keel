@@ -8,9 +8,7 @@ namespace Keel.Builtins
 {
     public class Add : Builtin
     {
-        public static readonly Add Instance = new Add();
-
-        private Add()
+        public Add()
             : base("+")
         { }
 

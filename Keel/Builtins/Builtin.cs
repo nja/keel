@@ -8,24 +8,14 @@ namespace Keel.Builtins
 {
     public abstract class Builtin : Function
     {
-        public readonly Symbol Symbol;
-
-        public Builtin(Symbol symbol, params string[] args)
-            : base(Cons.ToList(args.Select(s => new Symbol(s))), LispNull.Nil)
-        {
-            this.Symbol = symbol;
-        }
+        private readonly string name;
 
         public Builtin(string name, params string[] args)
-            : this(new Symbol(Symbol.Canonicalize(name)), args)
-        { }
-
-        public Builtin(string name, object rest, params string[] args)
-            : base(Cons.ToDottedList(args.Select(s => new Symbol(s))), LispNull.Nil)
+            : base(Cons.ToList(args.Select(s => new Symbol(s))), LispNull.Nil)
         {
-            throw new NotImplementedException();
+            this.name = name;
         }
 
-        public string Name { get { return Symbol.Name; } }
+        public string Name { get { return name; } }
     }
 }

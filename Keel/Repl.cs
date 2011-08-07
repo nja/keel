@@ -16,7 +16,6 @@ namespace Keel
         private readonly Tokenizer tokenizer = new Tokenizer();
         private readonly Reader reader = new Reader();
         
-        private SymbolsTable symbols;
         private LispEnvironment environment;
         private Symbol[] stars;
 
@@ -26,7 +25,6 @@ namespace Keel
 
         public Repl(TextReader input, TextWriter output)
         {
-            this.symbols = new DefaultSymbols();
             this.environment = GetLibraryEnvironment();
 
             this.stars = InternStars();
@@ -39,7 +37,7 @@ namespace Keel
         {
             var libEnv = new LispEnvironment(new DefaultEnvironment());
 
-            foreach (var form in reader.Read(Library.Text, symbols))
+            foreach (var form in reader.Read(Library.Text, libEnv.Symbols))
             {
                 libEnv.Eval(form);
             }
@@ -49,8 +47,8 @@ namespace Keel
 
         private LispEnvironment GetLoopEnvironment(Action action)
         {
-            var symbol = symbols.Intern("QUIT");
-            var builtin = new DelegateBuiltin(symbol, () => { action(); return DefaultSymbols.T; });
+            var symbol = environment.Symbols.Intern("QUIT");
+            var builtin = new DelegateBuiltin(symbol.Name, () => { action(); return T.True; });
 
             var loopEnv = new LispEnvironment(environment);
             loopEnv.AddBinding(symbol, builtin);
@@ -71,7 +69,7 @@ namespace Keel
             for (int i = 0; i < stars.Length; i++)
             {
                 name += "*";
-                stars[i] = symbols.Intern(name);
+                stars[i] = environment.Symbols.Intern(name);
             }
 
             return stars;
@@ -107,7 +105,7 @@ namespace Keel
                 
                 try
                 {
-                     doneReading = reader.TryRead(unreadTokens, symbols, out forms);
+                     doneReading = reader.TryRead(unreadTokens, loopEnv.Symbols, out forms);
                 }
                 catch (Exception readEx)
                 {

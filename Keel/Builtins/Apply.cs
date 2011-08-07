@@ -8,9 +8,7 @@ namespace Keel.Builtins
 {
     public class ApplyBuiltin : Builtin
     {
-        public static readonly ApplyBuiltin Instance = new ApplyBuiltin();
-
-        private ApplyBuiltin()
+        public ApplyBuiltin()
             : base("APPLY")
         { }
 

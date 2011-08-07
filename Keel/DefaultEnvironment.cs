@@ -10,20 +10,26 @@ namespace Keel
     public class DefaultEnvironment : LispEnvironment
     {
         public DefaultEnvironment()
+            : base(new SymbolsTable(), new Specials())
         {
-            // Builtins
-            AddBinding(Add.Instance.Symbol, Add.Instance);
-            AddBinding(ApplyBuiltin.Instance.Symbol, ApplyBuiltin.Instance);
-            AddBinding(Car.Instance.Symbol, Car.Instance);
-            AddBinding(Cdr.Instance.Symbol, Cdr.Instance);
-            AddBinding(ConsBuiltin.Instance.Symbol, ConsBuiltin.Instance);
-            AddBinding(Eq.Instance.Symbol, Eq.Instance);
-            AddBinding(EvalBuiltin.Instance.Symbol, EvalBuiltin.Instance);
-            AddBinding(MacroExpand.Instance.Symbol, MacroExpand.Instance);
-            AddBinding(Print.Instance.Symbol, Print.Instance);
-            // Constants
-            AddBinding(LispNull.Symbol, LispNull.Nil);
-            AddBinding(DefaultSymbols.T, DefaultSymbols.T);
+            Add(new Add());
+            Add(new ApplyBuiltin());
+            Add(new Car());
+            Add(new Cdr());
+            Add(new ConsBuiltin());
+            Add(new Eq());
+            Add(new EvalBuiltin());
+            Add(new MacroExpand());
+            Add(new Print());
+
+            AddBinding(T.True, T.True);
+            AddBinding(Symbols.Intern(LispNull.Name), LispNull.Nil);
+        }
+
+        private void Add(Builtin builtin)
+        {
+            var symbol = Symbols.Intern(builtin.Name);
+            AddBinding(symbol, builtin);
         }
     }
 }

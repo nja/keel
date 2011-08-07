@@ -9,9 +9,11 @@ namespace Keel.Builtins
     public class DelegateBuiltin : Builtin
     {
         private readonly Func<LispObject> fun;
+        private Symbol symbol;
+        private Func<LispObject> func;
 
-        public DelegateBuiltin(Symbol symbol, Func<LispObject> fun)
-            : base(symbol)
+        public DelegateBuiltin(string name, Func<LispObject> fun)
+            : base(name)
         {
             this.fun = fun;
         }

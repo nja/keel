@@ -31,18 +31,28 @@ namespace Keel.Objects
 
     public class LispEnvironment : LispObject
     {
-        static readonly LispEnvironment NoParent = new LispEnvironment(null);
+        static readonly LispEnvironment NoParent = new LispEnvironment();
 
         private readonly LispEnvironment parent;
         private readonly Dictionary<Symbol, LispObject> dict = new Dictionary<Symbol, LispObject>();
+        private readonly Specials specials;
+        protected readonly SymbolsTable symbols;
 
-        public LispEnvironment()
-            : this(NoParent)
+        private LispEnvironment()
         { }
+
+        public LispEnvironment(SymbolsTable symbols, Specials specials)
+            : this(NoParent)
+        {
+            this.symbols = symbols;
+            this.specials = specials;
+        }
 
         public LispEnvironment(LispEnvironment parent)
         {
             this.parent = parent;
+            this.symbols = parent.symbols;
+            this.specials = parent.specials;
 
             if (Level >= 256)
             {
@@ -161,9 +171,9 @@ namespace Keel.Objects
             {
                 return expr;
             }
-            else if (SpecialForm.IsSpecial((Cons)expr))
+            else if (specials.IsSpecial((Cons)expr))
             {
-                return SpecialForm.EvalForm((Cons)expr, this);
+                return specials.Eval((Cons)expr, this);
             }
             else if (IsMacro((Cons)expr))
             {
@@ -182,6 +192,8 @@ namespace Keel.Objects
                 return fun.Apply(argumentValues, this);
             }
         }
+
+        public SymbolsTable Symbols { get { return symbols; } }
 
         protected int Level
         {

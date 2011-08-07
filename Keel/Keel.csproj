@@ -52,7 +52,6 @@
     <Compile Include="Builtins\MacroExpand.cs" />
     <Compile Include="Builtins\Print.cs" />
     <Compile Include="DefaultEnvironment.cs" />
-    <Compile Include="DefaultSymbols.cs" />
     <Compile Include="Library.cs" />
     <Compile Include="Objects\Cons.cs" />
     <Compile Include="Objects\LispEnvironment.cs" />
@@ -62,6 +61,7 @@
     <Compile Include="Objects\LispNull.cs" />
     <Compile Include="Objects\LispObject.cs" />
     <Compile Include="ListEnumerator.cs" />
+    <Compile Include="Objects\T.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reader.cs" />
     <Compile Include="Repl.cs" />
@@ -74,6 +74,7 @@
     <Compile Include="SpecialForms\Quote.cs" />
     <Compile Include="SpecialForms\SpecialForm.cs" />
     <Compile Include="Objects\Symbol.cs" />
+    <Compile Include="Specials.cs" />
     <Compile Include="SymbolsTable.cs" />
     <Compile Include="Tokenizer.cs" />
     <Compile Include="WhiteSpace.cs" />

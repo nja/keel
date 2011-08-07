@@ -9,9 +9,7 @@ namespace Keel.SpecialForms
 {
     public class Defmacro : SpecialForm
     {
-        public static readonly Defmacro Instance = new Defmacro();
-
-        private Defmacro()
+        public Defmacro()
             : base("DEFMACRO")
         { }
 
@@ -20,7 +18,7 @@ namespace Keel.SpecialForms
             var symbol = defmacroBody.Car.As<Symbol>();
             var lambdaList = Car.Of(Cdr.Of(defmacroBody));
             var macroBody = Cdr.Of(Cdr.Of(defmacroBody)).As<Cons>();
-            var progn = Progn.Wrap(macroBody);
+            var progn = Progn.Wrap(macroBody, env);
 
             var macro = new Macro(lambdaList, progn, env);
 

@@ -7,8 +7,8 @@ namespace Keel.Objects
 {
     public class LispNull : Cons
     {
-        public static readonly Symbol Symbol = new Symbol("NIL");
         public static readonly LispNull Nil = new LispNull();
+        public const string Name = "NIL";
 
         private LispNull()
         { }
@@ -32,7 +32,7 @@ namespace Keel.Objects
 
         public override string ToString()
         {
-            return Symbol.Name;
+            return Name;
         }
     }
 }

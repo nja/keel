@@ -8,10 +8,10 @@ namespace Keel.SpecialForms
 {
     public class Progn : SpecialForm
     {
-        public static readonly Progn Instance = new Progn();
+        const string name = "PROGN";
 
-        private Progn()
-            : base("PROGN")
+        public Progn()
+            : base(name)
         { }
 
         public override LispObject Eval(Cons body, LispEnvironment env)
@@ -28,9 +28,9 @@ namespace Keel.SpecialForms
             return value;
         }
 
-        public static Cons Wrap(Cons body)
+        public static Cons Wrap(Cons body, LispEnvironment env)
         {
-            return new Cons(Instance.Symbol, body);
+            return new Cons(env.Symbols.Intern(name), body);
         }
     }
 }

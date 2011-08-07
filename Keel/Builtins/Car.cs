@@ -8,9 +8,7 @@ namespace Keel.Builtins
 {
     public class Car : Builtin
     {
-        public static readonly Car Instance = new Car();
-
-        private Car()
+        public Car()
             : base("CAR", "X")
         { }
 

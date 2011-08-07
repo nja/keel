@@ -8,9 +8,7 @@ namespace Keel.Builtins
 {
     public class Eq : Builtin
     {
-        public static readonly Eq Instance = new Eq();
-
-        private Eq()
+        public Eq()
             : base("EQ", "X", "Y")
         { }
 
@@ -21,12 +19,12 @@ namespace Keel.Builtins
 
             if (x == y)
             {
-                return DefaultSymbols.T;
+                return T.True;
             }
             else if (x is LispInteger && y is LispInteger
                 && ((LispInteger)x).Value == ((LispInteger)y).Value)
             {
-                return DefaultSymbols.T;
+                return T.True;
             }
             else
             {

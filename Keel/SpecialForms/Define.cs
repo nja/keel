@@ -9,9 +9,7 @@ namespace Keel.SpecialForms
 {
     public class Define : SpecialForm
     {
-        public static readonly Define Instance = new Define();
-
-        private Define()
+        public Define()
             : base("DEFINE")
         { }
 

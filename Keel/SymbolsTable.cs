@@ -10,6 +10,11 @@ namespace Keel
     {
         private readonly Dictionary<string, Symbol> symbols = new Dictionary<string, Symbol>();
 
+        public SymbolsTable()
+        {
+            symbols.Add(T.Name, T.True);
+        }
+
         public Symbol Intern(string name)
         {
             var canonicalName = Symbol.Canonicalize(name);
@@ -28,11 +33,6 @@ namespace Keel
         public bool TryLookup(string name, out Symbol symbol)
         {
             return symbols.TryGetValue(Symbol.Canonicalize(name), out symbol);
-        }
-
-        protected void Set(Symbol symbol)
-        {
-            symbols[symbol.Name] = symbol;
         }
     }
 }
