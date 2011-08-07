@@ -110,6 +110,10 @@ namespace Keel.Objects
             {
                 dict[symbol] = value;
             }
+            else if (!IsRoot)
+            {
+                parent.SetValue(symbol, value);
+            }
             else
             {
                 throw new EnvironmentException("No binding for " + symbol);
