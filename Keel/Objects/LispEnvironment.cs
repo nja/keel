@@ -174,12 +174,7 @@ namespace Keel.Objects
             else
             {
                 var funVal = Eval(Car.Of(expr));
-                Function fun = funVal as Function;
-
-                if (fun == null)
-                {
-                    throw new EvaluationException(funVal + " is not a function");
-                }
+                Function fun = funVal.As<Function>();
 
                 var arguments = Cdr.Of(expr);
                 var argumentValues = Cons.ToList(arguments.As<Cons>().Select(car => Eval(car)));
