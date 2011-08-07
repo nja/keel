@@ -72,6 +72,7 @@
     <Compile Include="SpecialForms\LambdaForm.cs" />
     <Compile Include="SpecialForms\Progn.cs" />
     <Compile Include="SpecialForms\Quote.cs" />
+    <Compile Include="SpecialForms\SetForm.cs" />
     <Compile Include="SpecialForms\SpecialForm.cs" />
     <Compile Include="Objects\Symbol.cs" />
     <Compile Include="Specials.cs" />

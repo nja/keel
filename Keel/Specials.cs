@@ -21,6 +21,7 @@ namespace Keel
             Add(new LambdaForm());
             Add(new Progn());
             Add(new Quote());
+            Add(new SetForm());
         }
 
         private void Add(SpecialForm special)
