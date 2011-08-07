@@ -27,7 +27,7 @@ namespace Keel.Objects
 
         public override string ToString()
         {
-            return string.Format("(LAMBDA {0} ...)", Arguments);
+            return string.Format("(LAMBDA {0} ...)", Arguments.IsNil ? "()" : Arguments.ToString());
         }
     }
 }
