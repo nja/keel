@@ -79,7 +79,15 @@
   (list 'when (list 'not test)
         body))
 
-(defun append )
+(defun append args
+  (cond ((null (cdr args))
+	 (car args))
+	((null (car args))
+	 (apply append (cdr args)))
+	(t (cons (caar args)
+		 (apply append
+			(cdar args)
+			(cdr args))))))
 
 (defmacro let (vars . body)
   (append (append (list 'lambda (map car vars))
