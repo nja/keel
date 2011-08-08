@@ -90,6 +90,6 @@
 			(cdr args))))))
 
 (defmacro let (vars . body)
-  (append (append (list 'lambda (map car vars))
-		body)
+  (append (list (append (list 'lambda (map car vars))
+			body))
 	  (map cadr vars)))
