@@ -30,9 +30,9 @@ namespace Keel
 
 (defmacro cond args
   (when (car args)
-    (list 'if (caaar args)
-          (cons 'progn (cdaar args))
-          (cons 'cond (list (cdar args))))))
+    (list 'if (caar args)
+          (cons 'progn (cdar args))
+          (cons 'cond (cdr args)))))
 
 (defun reverse (lst)
   (defun recur (acc lst)
