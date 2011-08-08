@@ -52,7 +52,7 @@
     <Compile Include="Builtins\MacroExpand.cs" />
     <Compile Include="Builtins\Print.cs" />
     <Compile Include="DefaultEnvironment.cs" />
-    <Compile Include="Library.cs" />
+    <Compile Include="LibraryEnvironment.cs" />
     <Compile Include="Objects\Cons.cs" />
     <Compile Include="Objects\LispEnvironment.cs" />
     <Compile Include="Objects\Function.cs" />
@@ -79,6 +79,11 @@
     <Compile Include="SymbolsTable.cs" />
     <Compile Include="Tokenizer.cs" />
     <Compile Include="WhiteSpace.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Library.lisp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

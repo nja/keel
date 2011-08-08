@@ -25,24 +25,12 @@ namespace Keel
 
         public Repl(TextReader input, TextWriter output)
         {
-            this.environment = GetLibraryEnvironment();
+            this.environment = new LibraryEnvironment(reader);
 
             this.stars = InternStars();
 
             this.input = input;
             this.output = output;
-        }
-
-        private LispEnvironment GetLibraryEnvironment()
-        {
-            var libEnv = new LispEnvironment(new DefaultEnvironment());
-
-            foreach (var form in reader.Read(Library.Text, libEnv.Symbols))
-            {
-                libEnv.Eval(form);
-            }
-
-            return libEnv;
         }
 
         private LispEnvironment GetLoopEnvironment(Action action)

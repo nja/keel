@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Keel.Objects;
+using System.IO;
 
 namespace Keel
 {
@@ -19,6 +20,12 @@ namespace Keel
 
     public class Reader
     {
+        public IList<LispObject> Read(TextReader text, SymbolsTable symbols)
+        {
+            var tokens = new Tokenizer().Tokenize(text);
+            return Read(tokens, symbols);
+        }
+
         public IList<LispObject> Read(IEnumerable<char> text, SymbolsTable symbols)
         {
             var tokens = new Tokenizer().Tokenize(text);

@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Keel
-{
-    public class Library
-    {
-        public const string Text = @"
-(defun null (x) (eq x nil))
+﻿(defun null (x) (eq x nil))
 
 (defun not (x)
   (if (eq x nil)
@@ -25,6 +15,7 @@ namespace Keel
 (defun caar (x) (car (car x)))
 (defun cadr (x) (car (cdr x)))
 (defun cdar (x) (cdr (car x)))
+(defun cddr (x) (cdr (cdr x)))
 (defun caaar (x) (car (car (car x))))
 (defun cdaar (x) (cdr (car (car x))))
 
@@ -77,6 +68,9 @@ namespace Keel
   (list 'when (list 'not test)
         body))
 
-";
-    }
-}
+(defun append )
+
+(defmacro let (vars . body)
+  (append (append (list 'lambda (map car vars))
+		body)
+	  (map cadr vars)))
