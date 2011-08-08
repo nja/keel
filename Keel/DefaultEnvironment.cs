@@ -14,6 +14,7 @@ namespace Keel
         {
             Add(new Add());
             Add(new ApplyBuiltin());
+            Add(new Atom());
             Add(new Car());
             Add(new Cdr());
             Add(new ConsBuiltin());

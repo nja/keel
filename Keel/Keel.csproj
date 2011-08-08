@@ -45,6 +45,7 @@
     <Compile Include="Builtins\Builtin.cs" />
     <Compile Include="Builtins\Car.cs" />
     <Compile Include="Builtins\Cdr.cs" />
+    <Compile Include="Builtins\Atom.cs" />
     <Compile Include="Builtins\Cons.cs" />
     <Compile Include="Builtins\DelegateBuiltin.cs" />
     <Compile Include="Builtins\Eq.cs" />
