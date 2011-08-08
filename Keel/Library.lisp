@@ -12,6 +12,17 @@
 
 (defun list x x)
 
+(defun list* x
+  (cond ((null (cdr x))
+         (car x))
+        ((null (cddr x))
+         (cons (car x)
+               (cadr x)))
+        (t (cons (car x)
+                 (apply list*
+                        (cadr x)
+                        (cddr x))))))
+
 (defun caar (x) (car (car x)))
 (defun cadr (x) (car (cdr x)))
 (defun cdar (x) (cdr (car x)))
