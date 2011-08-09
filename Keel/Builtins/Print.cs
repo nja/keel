@@ -32,6 +32,14 @@ namespace Keel.Builtins
             {
                 output.Append(x.ToString());
             }
+            else if (Car.Of(x) is Symbol
+                     && ((Symbol)Car.Of(x)).SameName("QUOTE")
+                     && !Cdr.Of(x).IsNil
+                     && Cdr.Of(Cdr.Of(x)).IsNil)
+            {
+                output.Append("'");
+                PrintObject(Car.Of(Cdr.Of(x)), output);
+            }
             else
             {
                 output.Append("(");
