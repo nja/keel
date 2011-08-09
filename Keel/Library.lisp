@@ -29,6 +29,7 @@
 (defun cddr (x) (cdr (cdr x)))
 (defun caaar (x) (car (car (car x))))
 (defun cdaar (x) (cdr (car (car x))))
+(defun cadar (x) (car (cdr (car x))))
 
 (defmacro cond args
   (when (car args)
@@ -93,3 +94,11 @@
   (append (list (append (list 'lambda (map car vars))
 			body))
 	  (map cadr vars)))
+
+(defmacro let* (vars . body)
+  (if (null (cdr vars))
+      (append (list 'let vars) body)
+      (append (list (list 'lambda (list (caar vars))
+			  (append (list 'let* (cdr vars))
+				  body)))
+	      (list (cadar vars)))))
