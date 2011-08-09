@@ -20,7 +20,7 @@ namespace Keel.SpecialForms
             var macroBody = Cdr.Of(Cdr.Of(defmacroBody)).As<Cons>();
             var progn = Progn.Wrap(macroBody, env);
 
-            var macro = new Macro(lambdaList, progn, env);
+            var macro = new Macro(symbol.Name, lambdaList, progn, env);
 
             env.AddBinding(symbol, macro);
 

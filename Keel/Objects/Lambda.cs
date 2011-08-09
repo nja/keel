@@ -7,12 +7,18 @@ namespace Keel.Objects
 {
     public class Lambda : Function
     {
+        private readonly string name;
         private readonly Cons body;
         private readonly LispEnvironment closure;
 
         public Lambda(LispObject lambdaList, Cons body, LispEnvironment closure)
+            : this(null, lambdaList, body, closure)
+        { }
+
+        public Lambda(string name, LispObject lambdaList, Cons body, LispEnvironment closure)
             : base(lambdaList, body)
         {
+            this.name = name;
             this.body = body;
             this.closure = closure;
         }
@@ -27,7 +33,14 @@ namespace Keel.Objects
 
         public override string ToString()
         {
-            return string.Format("(LAMBDA {0} ...)", Arguments.IsNil ? "()" : Arguments.ToString());
+            if (name == null)
+            {
+                return string.Format("<Anynomous function: {0}>", ArgumentsString);
+            }
+            else
+            {
+                return string.Format("<Named function {0}: {1}>", name, ArgumentsString);
+            }
         }
     }
 }

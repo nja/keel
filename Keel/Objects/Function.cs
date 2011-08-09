@@ -29,5 +29,10 @@ namespace Keel.Objects
         {
             get { return args; }
         }
+
+        protected string ArgumentsString
+        {
+            get { return Arguments.IsNil ? "()" : Arguments.ToString(); }
+        }
     }
 }

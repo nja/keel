@@ -17,5 +17,10 @@ namespace Keel.Builtins
         }
 
         public string Name { get { return name; } }
+
+        public override string ToString()
+        {
+            return string.Format("<Builtin function {0}: {1}>", Name, ArgumentsString);
+        }
     }
 }

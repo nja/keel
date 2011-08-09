@@ -211,7 +211,7 @@ namespace Keel.Objects
 
         public override string ToString()
         {
-            return string.Format("Env[{0}]({1})", Level, Count);
+            return string.Format("<Environment[{0}]({1})>", Level, Count);
         }
 
         public bool IsMacro(Cons form)

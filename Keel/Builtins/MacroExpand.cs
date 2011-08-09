@@ -8,11 +8,13 @@ namespace Keel.Builtins
 {
     public class Macro : LispObject
     {
+        private readonly string name;
         private readonly Lambda expander;
         private readonly LispEnvironment macroEnv;
 
-        public Macro(LispObject lambdaList, Cons macroBody, LispEnvironment macroEnv)
+        public Macro(string name, LispObject lambdaList, Cons macroBody, LispEnvironment macroEnv)
         {
+            this.name = name;
             this.expander = new Lambda(lambdaList, macroBody, macroEnv);
             this.macroEnv = macroEnv;
         }
@@ -25,7 +27,7 @@ namespace Keel.Builtins
 
         public override string ToString()
         {
-            return "MACRO";
+            return string.Format("<Macro {0}>", name);
         }
     }
 
