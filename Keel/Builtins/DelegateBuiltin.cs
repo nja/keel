@@ -9,8 +9,6 @@ namespace Keel.Builtins
     public class DelegateBuiltin : Builtin
     {
         private readonly Func<LispObject> fun;
-        private Symbol symbol;
-        private Func<LispObject> func;
 
         public DelegateBuiltin(string name, Func<LispObject> fun)
             : base(name)

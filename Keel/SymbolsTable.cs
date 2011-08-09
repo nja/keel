@@ -12,7 +12,7 @@ namespace Keel
 
         public SymbolsTable()
         {
-            symbols.Add(T.Name, T.True);
+            symbols.Add(T.TrueName, T.True);
         }
 
         public Symbol Intern(string name)
