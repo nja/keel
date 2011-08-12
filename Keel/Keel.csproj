@@ -55,11 +55,13 @@
     <Compile Include="DefaultEnvironment.cs" />
     <Compile Include="LibraryEnvironment.cs" />
     <Compile Include="Objects\Cons.cs" />
+    <Compile Include="Objects\LispDouble.cs" />
     <Compile Include="Objects\LispEnvironment.cs" />
     <Compile Include="Objects\Function.cs" />
     <Compile Include="Objects\Lambda.cs" />
     <Compile Include="Objects\LispInteger.cs" />
     <Compile Include="Objects\LispNull.cs" />
+    <Compile Include="Objects\LispNumber.cs" />
     <Compile Include="Objects\LispObject.cs" />
     <Compile Include="ListEnumerator.cs" />
     <Compile Include="Objects\T.cs" />

@@ -5,13 +5,18 @@ using System.Text;
 
 namespace Keel.Objects
 {
-    public class LispInteger : LispNumber
+    public class LispDouble : LispNumber
     {
-        public readonly int Value;
+        public readonly double Value;
 
-        public LispInteger(int value)
+        public LispDouble(double value)
         {
             this.Value = value;
+        }
+
+        public LispDouble(LispInteger integer)
+        {
+            this.Value = Convert.ToDouble(integer.Value);
         }
 
         public override string ToString()
@@ -21,7 +26,7 @@ namespace Keel.Objects
 
         public override LispNumber Negate()
         {
-            return new LispInteger(-Value);
+            return new LispDouble(-Value);
         }
 
         public override LispNumber Add(LispNumber addend)
@@ -31,12 +36,12 @@ namespace Keel.Objects
 
         public override LispNumber Add(LispInteger addend)
         {
-            return Add(this, addend);
+            return new LispDouble(addend).Add(this);
         }
 
         public override LispNumber Add(LispDouble addend)
         {
-            return addend.Add(this);
+            return Add(this, addend);
         }
     }
 }

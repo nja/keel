@@ -14,15 +14,15 @@ namespace Keel.Builtins
 
         public override LispObject Apply(Cons argumentsValues, LispEnvironment env)
         {
-            int sum = 0;
+            LispNumber sum = new LispInteger(0);
 
             foreach (var addend in argumentsValues)
             {
-                var integer = addend.As<LispInteger>();
-                sum += integer.Value;
+                var num = addend.As<LispNumber>();
+                sum = sum.Add(num);
             }
 
-            return new LispInteger(sum);
+            return sum;
         }
     }
 }

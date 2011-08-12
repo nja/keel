@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Keel.Objects;
 using System.IO;
+using System.Globalization;
 
 namespace Keel
 {
@@ -227,17 +228,26 @@ namespace Keel
             return false;
         }
 
+        private const NumberStyles NumberStyle = NumberStyles.Number;
+        private static readonly IFormatProvider FormatProvider = CultureInfo.InvariantCulture;
+
         private LispObject ReadAtom(IEnumerator<Token> tokens, SymbolsTable symbols)
         {
+            string name = tokens.Current.Name;
             int intValue;
+            double doubleValue;
 
-            if (int.TryParse(tokens.Current.Name, out intValue))
+            if (int.TryParse(name, NumberStyle, FormatProvider, out intValue))
             {
                 return new LispInteger(intValue);
             }
+            else if (double.TryParse(name, NumberStyle, FormatProvider, out doubleValue))
+            {
+                return new LispDouble(doubleValue);
+            }
             else
             {
-                return symbols.Intern(tokens.Current.Name);
+                return symbols.Intern(name);
             }
         }
     }
