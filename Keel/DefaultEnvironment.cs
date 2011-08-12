@@ -22,6 +22,7 @@ namespace Keel
             Add(new EvalBuiltin());
             Add(new MacroExpand());
             Add(new Print());
+            Add(new Subtract());
 
             AddBinding(T.True, T.True);
             AddBinding(Symbols.Intern(LispNull.Name), LispNull.Nil);

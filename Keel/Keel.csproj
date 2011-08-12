@@ -52,6 +52,7 @@
     <Compile Include="Builtins\Eval.cs" />
     <Compile Include="Builtins\MacroExpand.cs" />
     <Compile Include="Builtins\Print.cs" />
+    <Compile Include="Builtins\Subtract.cs" />
     <Compile Include="DefaultEnvironment.cs" />
     <Compile Include="LibraryEnvironment.cs" />
     <Compile Include="Objects\Cons.cs" />
