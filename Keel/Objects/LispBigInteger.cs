@@ -2,26 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Numerics;
 
 namespace Keel.Objects
 {
-    public class LispDouble : LispNumber
+    public class LispBigInteger : LispNumber
     {
-        public readonly double Value;
+        public readonly BigInteger Value;
 
-        public LispDouble(double value)
+        public LispBigInteger(LispInteger value)
+        {
+            this.Value = value.Value;
+        }
+
+        public LispBigInteger(BigInteger value)
         {
             this.Value = value;
-        }
-
-        public LispDouble(LispInteger integer)
-        {
-            this.Value = (double)integer.Value;
-        }
-
-        public LispDouble(LispBigInteger bigInteger)
-        {
-            this.Value = (double)bigInteger.Value;
         }
 
         public override string ToString()
@@ -31,7 +27,7 @@ namespace Keel.Objects
 
         public override LispNumber Negate()
         {
-            return new LispDouble(-Value);
+            return new LispBigInteger(Value * -1);
         }
 
         public override LispNumber Add(LispNumber addend)
@@ -41,22 +37,22 @@ namespace Keel.Objects
 
         public override LispNumber Add(LispInteger addend)
         {
-            return new LispDouble(addend).Add(this);
+            return new LispBigInteger(addend).Add(this);
         }
 
         public override LispNumber Add(LispDouble addend)
         {
-            return Add(this, addend);
+            return new LispDouble(this).Add(addend);
         }
 
         public override LispNumber Add(LispBigInteger addend)
         {
-            return new LispDouble(addend).Add(this);
+            return Add(this, addend);
         }
 
         public override bool NumberEquals(LispNumber number)
         {
-            return number.Equals(this);
+            return number.NumberEquals(this);
         }
 
         public override bool NumberEquals(LispInteger number)
@@ -71,7 +67,7 @@ namespace Keel.Objects
 
         public override bool NumberEquals(LispBigInteger number)
         {
-            return NumberEquals(number, this);
+            return NumberEquals(this, number);
         }
     }
 }

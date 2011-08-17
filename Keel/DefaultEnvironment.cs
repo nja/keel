@@ -25,7 +25,10 @@ namespace Keel
             Add(new Subtract());
 
             AddBinding(T.True, T.True);
-            AddBinding(Symbols.Intern(LispNull.Name), LispNull.Nil);
+            AddBinding(LispNull.Name, LispNull.Nil);
+
+            AddBinding("MAXINT", LispInteger.Max);
+            AddBinding("MININT", LispInteger.Min);
         }
 
         private void Add(Builtin builtin)

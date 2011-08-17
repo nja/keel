@@ -21,8 +21,8 @@ namespace Keel.Builtins
             {
                 return T.True;
             }
-            else if (x is LispInteger && y is LispInteger
-                && ((LispInteger)x).Value == ((LispInteger)y).Value)
+            else if (x is LispNumber && y is LispNumber
+                && ((LispNumber)x).NumberEquals((LispNumber)y))
             {
                 return T.True;
             }

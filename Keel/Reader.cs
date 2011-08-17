@@ -5,6 +5,7 @@ using System.Text;
 using Keel.Objects;
 using System.IO;
 using System.Globalization;
+using System.Numerics;
 
 namespace Keel
 {
@@ -236,10 +237,15 @@ namespace Keel
             string name = tokens.Current.Name;
             int intValue;
             double doubleValue;
+            BigInteger bigIntValue;
 
             if (int.TryParse(name, NumberStyle, FormatProvider, out intValue))
             {
                 return new LispInteger(intValue);
+            }
+            else if (BigInteger.TryParse(name, NumberStyle, FormatProvider, out bigIntValue))
+            {
+                return new LispBigInteger(bigIntValue);
             }
             else if (double.TryParse(name, NumberStyle, FormatProvider, out doubleValue))
             {

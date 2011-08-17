@@ -104,6 +104,11 @@ namespace Keel.Objects
             }
         }
 
+        public void AddBinding(string symbolName, LispObject value)
+        {
+            AddBinding(Symbols.Intern(Symbol.Canonicalize(symbolName)), value);
+        }
+
         public void SetValue(Symbol symbol, LispObject value)
         {
             if (dict.ContainsKey(symbol))

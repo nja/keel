@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,6 +57,7 @@
     <Compile Include="DefaultEnvironment.cs" />
     <Compile Include="LibraryEnvironment.cs" />
     <Compile Include="Objects\Cons.cs" />
+    <Compile Include="Objects\LispBigInteger.cs" />
     <Compile Include="Objects\LispDouble.cs" />
     <Compile Include="Objects\LispEnvironment.cs" />
     <Compile Include="Objects\Function.cs" />
