@@ -251,6 +251,10 @@ namespace Keel
             {
                 return new LispDouble(doubleValue);
             }
+            else if (Symbol.Canonicalize(name) == LispNull.Name)
+            {
+                return LispNull.Nil;
+            } 
             else
             {
                 return symbols.Intern(name);
