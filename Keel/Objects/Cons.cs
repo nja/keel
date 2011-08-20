@@ -83,6 +83,11 @@ namespace Keel.Objects
             get { return false; }
         }
 
+        public override bool IsCons
+        {
+            get { return true; }
+        }
+
         #region IEnumerable<LispObject> Members
 
         public IEnumerator<LispObject> GetEnumerator()

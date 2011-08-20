@@ -48,6 +48,7 @@
     <Compile Include="Builtins\Cdr.cs" />
     <Compile Include="Builtins\Atom.cs" />
     <Compile Include="Builtins\Cons.cs" />
+    <Compile Include="Builtins\Consp.cs" />
     <Compile Include="Builtins\DelegateBuiltin.cs" />
     <Compile Include="Builtins\Eq.cs" />
     <Compile Include="Builtins\Eval.cs" />

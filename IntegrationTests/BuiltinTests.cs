@@ -74,6 +74,15 @@ namespace IntegrationTests
             new IntegrationTest().Test(input, output);
         }
 
+        [TestCase("(consp nil)", "NIL")]
+        [TestCase("(consp 1)", "NIL")]
+        [TestCase("(consp (lambda () t))", "NIL")]
+        [TestCase("(consp (cons 1 2))", "T")]
+        public void Consp(string input, string output)
+        {
+            new IntegrationTest().Test(input, output);
+        }
+
         [TestCase("(eq nil nil)", "T")]
         [TestCase("(eq t t)", "T")]
         [TestCase("(eq nil t)", "NIL")]

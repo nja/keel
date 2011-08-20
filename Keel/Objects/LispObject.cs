@@ -29,6 +29,11 @@ namespace Keel.Objects
             get { return true; }
         }
 
+        public virtual bool IsCons
+        {
+            get { return false; }
+        }
+
         public LO As<LO>() where LO : LispObject
         {
             LO lo = this as LO;

@@ -30,6 +30,14 @@ namespace Keel.Objects
             get { return true; }
         }
 
+        /// <summary>
+        /// LispNull inherits Cons for the Car and Cdr properties, but (consp NIL) => NIL
+        /// </summary>
+        public override bool IsCons
+        {
+            get { return false; }
+        }
+
         public override string ToString()
         {
             return Name;

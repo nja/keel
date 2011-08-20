@@ -18,6 +18,7 @@ namespace Keel
             Add(new Car());
             Add(new Cdr());
             Add(new ConsBuiltin());
+            Add(new Consp());
             Add(new Eq());
             Add(new EvalBuiltin());
             Add(new MacroExpand());
