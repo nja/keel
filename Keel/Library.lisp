@@ -5,6 +5,8 @@
     t
     nil))
 
+(defun identity (x) x)
+
 (defun length (lst)
   (if (null lst)
       0
