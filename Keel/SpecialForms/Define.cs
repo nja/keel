@@ -20,7 +20,7 @@ namespace Keel.SpecialForms
 
             env.AddBinding(symbol, value);
 
-            return value;
+            return symbol;
         }
     }
 }
