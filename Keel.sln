@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keel", "Keel\Keel.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeelConsole", "KeelConsole\KeelConsole.csproj", "{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{D5F16AEB-6B5F-4261-9BF2-B92AF425D108}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,18 @@ Global
 		{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}.Release|x64.ActiveCfg = Release|x86
 		{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}.Release|x86.ActiveCfg = Release|x86
 		{514B1B37-5B8C-4183-BD0E-B3CA04B0A576}.Release|x86.Build.0 = Release|x86
+		{D5F16AEB-6B5F-4261-9BF2-B92AF425D108}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5F16AEB-6B5F-4261-9BF2-B92AF425D108}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5F16AEB-6B5F-4261-9BF2-B92AF425D108}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D5F16AEB-6B5F-4261-9BF2-B92AF425D108}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D5F16AEB-6B5F-4261-9BF2-B92AF425D108}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D5F16AEB-6B5F-4261-9BF2-B92AF425D108}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D5F16AEB-6B5F-4261-9BF2-B92AF425D108}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5F16AEB-6B5F-4261-9BF2-B92AF425D108}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5F16AEB-6B5F-4261-9BF2-B92AF425D108}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D5F16AEB-6B5F-4261-9BF2-B92AF425D108}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D5F16AEB-6B5F-4261-9BF2-B92AF425D108}.Release|x64.ActiveCfg = Release|Any CPU
+		{D5F16AEB-6B5F-4261-9BF2-B92AF425D108}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
