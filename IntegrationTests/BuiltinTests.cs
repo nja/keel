@@ -6,6 +6,8 @@ using NUnit.Framework;
 
 namespace IntegrationTests
 {
+    using System.Globalization;
+
     [TestFixture]
     public class BuiltinTests
     {
@@ -123,6 +125,31 @@ namespace IntegrationTests
         public void Subtract(string input, string output)
         {
             new IntegrationTest().Test(input, output);
+        }
+
+        [TestCase("1")]
+        [TestCase("0.0625")]
+        public void Wiggle(string input)
+        {
+            var test = new IntegrationTest();
+            var smidgen = Math.Pow(2, -32).ToString(CultureInfo.InvariantCulture);
+
+            test.Test(string.Format("(+ {0} {0} -{0})", input), input);
+            test.Test(string.Format("(= {0} (+ {0} {0} -{0}))", input), "T");
+
+            test.Test(string.Format("(+ {0} {1} -{1})", input, smidgen), input);
+            test.Test(string.Format("(= {0} (+ {0} {1} -{1}))", input, smidgen), "T");
+
+            test.Test(string.Format("(< {0} (+ {0} {1}))", input, smidgen), "T");
+            test.Test(string.Format("(< (- {0} {1}) {0})", input, smidgen), "T");
+            
+            test.Test(string.Format("(> {0} (- {0} {1}))", input, smidgen), "T");
+            test.Test(string.Format("(> (+ {0} {1}) {0})", input, smidgen), "T");
+
+            test.Test(string.Format("(= {0} (+ {0} {0}))", input), "NIL");
+            test.Test(string.Format("(= {0} (+ {0} {1}))", input, smidgen), "NIL");
+            test.Test(string.Format("(< {0} (- {0} {1}))", input, smidgen), "NIL");
+            test.Test(string.Format("(> {0} (+ {0} {1}))", input, smidgen), "NIL");
         }
     }
 }

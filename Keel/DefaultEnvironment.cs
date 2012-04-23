@@ -21,6 +21,11 @@ namespace Keel
             Add(new Consp());
             Add(new Eq());
             Add(new EvalBuiltin());
+            Add(new NumberInequality("<", (a, b) => a.CompareTo(b) < 0));
+            Add(new NumberInequality(">", (a, b) => a.CompareTo(b) > 0));
+            Add(new NumberInequality("<=", (a, b) => a.CompareTo(b) <= 0));
+            Add(new NumberInequality(">=", (a, b) => a.CompareTo(b) >= 0));
+            Add(new NumberInequality("=", (a, b) => a.CompareTo(b) == 0));
             Add(new MacroExpand());
             Add(new Print());
             Add(new Subtract());

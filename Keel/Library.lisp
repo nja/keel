@@ -104,3 +104,7 @@
 			  (append (list 'let* (cdr vars))
 				  body)))
 	      (list (cadar vars)))))
+
+(defun 1+ (x) (+ x 1))
+(defun 1- (x) (- x 1))
+

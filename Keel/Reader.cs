@@ -229,7 +229,10 @@ namespace Keel
             return false;
         }
 
-        private const NumberStyles NumberStyle = NumberStyles.Number;
+        private const NumberStyles IntegerStyle = NumberStyles.Integer;
+
+        private const NumberStyles DoubleStyle = NumberStyles.Float;
+
         private static readonly IFormatProvider FormatProvider = CultureInfo.InvariantCulture;
 
         private LispObject ReadAtom(IEnumerator<Token> tokens, SymbolsTable symbols)
@@ -239,19 +242,20 @@ namespace Keel
             double doubleValue;
             BigInteger bigIntValue;
 
-            if (int.TryParse(name, NumberStyle, FormatProvider, out intValue))
+            if (int.TryParse(name, IntegerStyle, FormatProvider, out intValue))
             {
                 return new LispInteger(intValue);
             }
-            else if (BigInteger.TryParse(name, NumberStyle, FormatProvider, out bigIntValue))
+            else if (BigInteger.TryParse(name, IntegerStyle, FormatProvider, out bigIntValue))
             {
                 return new LispBigInteger(bigIntValue);
             }
-            else if (double.TryParse(name, NumberStyle, FormatProvider, out doubleValue))
+            else if (double.TryParse(name, DoubleStyle, FormatProvider, out doubleValue))
             {
                 return new LispDouble(doubleValue);
             }
-            else if (Symbol.Canonicalize(name) == LispNull.Name)
+
+            if (Symbol.Canonicalize(name) == LispNull.Name)
             {
                 return LispNull.Nil;
             } 

@@ -9,6 +9,13 @@ namespace IntegrationTests
     [TestFixture]
     public class LibraryTest
     {
+        [TestCase("(1+ 1)", "2")]
+        [TestCase("(1- 1)", "0")]
+        public void AddSub1(string input, string output)
+        {
+            new IntegrationTest().Test(input, output);
+        }
+
         [TestCase("(append)", "NIL")]
         [TestCase("(append '(a b c) '(d e f) '() '(g))", "(A B C D E F G)")]
         [TestCase("(append '(a b c) 'd)", "(A B C . D)")]

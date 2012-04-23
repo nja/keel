@@ -52,8 +52,12 @@ namespace IntegrationTests
                     Assert.Fail("No output for input form: " + forms[i].ToString());
                 }
 
+                var printedForm = Print.PrintObject(forms[i]);
                 var printedResult = Print.PrintObject(results[i]);
-                Assert.AreEqual(output[i], printedResult);
+                Assert.AreEqual(
+                    output[i],
+                    printedResult,
+                    string.Format("Wanted {0} got {1} from {2}", output[i], printedResult, printedForm));
             }            
         }
     }

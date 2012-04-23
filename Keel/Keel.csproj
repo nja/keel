@@ -52,6 +52,7 @@
     <Compile Include="Builtins\DelegateBuiltin.cs" />
     <Compile Include="Builtins\Eq.cs" />
     <Compile Include="Builtins\Eval.cs" />
+    <Compile Include="Builtins\NumberInequality.cs" />
     <Compile Include="Builtins\MacroExpand.cs" />
     <Compile Include="Builtins\Print.cs" />
     <Compile Include="Builtins\Subtract.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="SpecialForms\Define.cs" />
     <Compile Include="SpecialForms\Defmacro.cs" />
     <Compile Include="SpecialForms\Defun.cs" />
+    <Compile Include="SpecialForms\Do.cs" />
     <Compile Include="SpecialForms\If.cs" />
     <Compile Include="SpecialForms\LambdaForm.cs" />
     <Compile Include="SpecialForms\Progn.cs" />

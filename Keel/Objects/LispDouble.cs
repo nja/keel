@@ -26,7 +26,7 @@ namespace Keel.Objects
 
         public override string ToString()
         {
-            return Value.ToString(FormatProvider);
+            return Value.ToString("R", FormatProvider);
         }
 
         public override LispNumber Negate()
@@ -72,6 +72,26 @@ namespace Keel.Objects
         public override bool NumberEquals(LispBigInteger number)
         {
             return NumberEquals(number, this);
+        }
+
+        public override int CompareTo(LispNumber number)
+        {
+            return -number.CompareTo(this);
+        }
+
+        public override int CompareTo(LispInteger number)
+        {
+            return -Compare(number, this);
+        }
+
+        public override int CompareTo(LispDouble number)
+        {
+            return Value.CompareTo(number.Value);
+        }
+
+        public override int CompareTo(LispBigInteger number)
+        {
+            return -Compare(number, this);
         }
     }
 }

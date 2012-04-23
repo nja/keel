@@ -73,5 +73,25 @@ namespace Keel.Objects
         {
             return NumberEquals(this, number);
         }
+
+        public override int CompareTo(LispNumber number)
+        {
+            return -number.CompareTo(this);
+        }
+
+        public override int CompareTo(LispInteger number)
+        {
+            return Value.CompareTo(number.Value);
+        }
+
+        public override int CompareTo(LispDouble number)
+        {
+            return Compare(this, number);
+        }
+
+        public override int CompareTo(LispBigInteger number)
+        {
+            return Compare(this, number);
+        }
     }
 }

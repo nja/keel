@@ -17,6 +17,8 @@ namespace Keel
             Add(new Define());
             Add(new Defmacro());
             Add(new Defun());
+            Add(new Do());
+            Add(new DoStar());
             Add(new If());
             Add(new LambdaForm());
             Add(new Progn());

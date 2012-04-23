@@ -23,6 +23,11 @@ namespace Keel.Objects
         public abstract bool NumberEquals(LispDouble number);
         public abstract bool NumberEquals(LispBigInteger number);
 
+        public abstract int CompareTo(LispNumber number);
+        public abstract int CompareTo(LispInteger number);
+        public abstract int CompareTo(LispDouble number);
+        public abstract int CompareTo(LispBigInteger number);
+
         protected LispNumber Add(LispInteger a, LispInteger b)
         {
             try
@@ -78,6 +83,32 @@ namespace Keel.Objects
         protected bool NumberEquals(LispDouble a, LispDouble b)
         {
             return a.Value == b.Value;
+        }
+
+        protected int Compare(LispInteger a, LispDouble b)
+        {
+            return ((double)a.Value).CompareTo(b.Value);
+        }
+
+        protected int Compare(LispInteger a, LispBigInteger b)
+        {
+            return ((BigInteger)a.Value).CompareTo(b.Value);
+        }
+
+        protected int Compare(LispBigInteger a, LispDouble b)
+        {
+            var truncatedB = new BigInteger(b.Value);
+
+            var truncatedCompare = a.Value.CompareTo(truncatedB);
+
+            if (truncatedCompare == 0)
+            {
+                return -Math.Truncate(b.Value).CompareTo(b.Value);
+            }
+            else
+            {
+                return truncatedCompare;
+            }
         }
     }
 }
