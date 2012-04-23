@@ -1,29 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-using System.IO;
-
-namespace Keel.Builtins
+﻿namespace Keel.Builtins
 {
+    using System;
+    using System.Text;
+
+    using Keel.Objects;
+
     public class Print : Builtin
     {
         public Print()
             : base("PRINT", "X")
         { }
 
-        public override LispObject Apply(Cons argumentValues, LispEnvironment env)
-        {
-            Console.WriteLine(PrintObject(argumentValues.Car));
-            return argumentValues.Car;
-        }
-
         public static string PrintObject(LispObject x)
         {
             var sb = new StringBuilder();
             PrintObject(x, sb);
             return sb.ToString();
+        }
+
+        public override LispObject Apply(Cons argumentValues, LispEnvironment env)
+        {
+            Console.WriteLine(PrintObject(argumentValues.Car));
+            return argumentValues.Car;
         }
 
         private static void PrintObject(LispObject x, StringBuilder output)
@@ -55,7 +53,8 @@ namespace Keel.Builtins
             {
                 return;
             }
-            else if (x.IsAtom)
+            
+            if (x.IsAtom)
             {
                 output.Append(" . " + x);
             }

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-using Keel.Builtins;
-
-namespace Keel.SpecialForms
+﻿namespace Keel.SpecialForms
 {
+    using Keel.Builtins;
+    using Keel.Objects;
+
     public class If : SpecialForm
     {
         public If()
@@ -23,10 +19,8 @@ namespace Keel.SpecialForms
             {
                 return env.Eval(thenForm);
             }
-            else
-            {
-                return env.Eval(elseForm);
-            }
+            
+            return env.Eval(elseForm);
         }
     }
 }

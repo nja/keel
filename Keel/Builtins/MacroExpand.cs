@@ -1,50 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-
-namespace Keel.Builtins
+﻿namespace Keel.Builtins
 {
-    public class Macro : LispObject
-    {
-        private readonly string name;
-        private readonly Lambda expander;
-        private readonly LispEnvironment macroEnv;
-
-        public Macro(string name, LispObject lambdaList, Cons macroBody, LispEnvironment macroEnv)
-        {
-            this.name = name;
-            this.expander = new Lambda(lambdaList, macroBody, macroEnv);
-            this.macroEnv = macroEnv;
-        }
-
-        public Cons Expand(Cons form, LispEnvironment env)
-        {
-            var argumentValues = form.Cdr.As<Cons>();
-            return expander.Apply(argumentValues, macroEnv).As<Cons>();
-        }
-
-        public override string ToString()
-        {
-            return string.Format("<Macro {0}>", name);
-        }
-    }
+    using Keel.Objects;
 
     public class MacroExpand : Builtin
     {
         public MacroExpand()
             : base("MACROEXPAND", "FORM")
         { }
-
-        public override LispObject Apply(Cons argumentValues, LispEnvironment env)
-        {
-            Cons expansion;
-
-            Expand(argumentValues.Car.As<Cons>(), env, out expansion);
-
-            return expansion;
-        }
 
         public static bool Expand(Cons form, LispEnvironment env, out Cons expansion)
         {
@@ -70,11 +32,18 @@ namespace Keel.Builtins
 
                 return true;
             }
-            else
-            {
-                expansion = form;
-                return false;
-            }
+            
+            expansion = form;
+            return false;
+        }
+
+        public override LispObject Apply(Cons argumentValues, LispEnvironment env)
+        {
+            Cons expansion;
+
+            Expand(argumentValues.Car.As<Cons>(), env, out expansion);
+
+            return expansion;
         }
     }
 }

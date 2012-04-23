@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Keel.Objects
+﻿namespace Keel.Objects
 {
-    public class TypeException : Exception
-    {
-        public TypeException(string msg)
-            : base(msg)
-        { }
-    }
-
     public class LispObject
     {
         public bool IsNil
@@ -34,13 +22,13 @@ namespace Keel.Objects
             get { return false; }
         }
 
-        public LO As<LO>() where LO : LispObject
+        public TLo As<TLo>() where TLo : LispObject
         {
-            LO lo = this as LO;
+            TLo lo = this as TLo;
 
             if (lo == null)
             {
-                throw new TypeException(this + " is not of type " + typeof(LO).Name);
+                throw new TypeException(this + " is not of type " + typeof(TLo).Name);
             }
 
             return lo;

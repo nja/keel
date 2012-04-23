@@ -1,27 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using Keel.Objects;
-using Keel.Builtins;
-
-namespace Keel
+﻿namespace Keel
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using Keel.Builtins;
+    using Keel.Objects;
+
     public class Repl
     {
+        #region Constants and Fields
+
+        private const string ContPrompt = "  ";
+
+        private const string Prompt = "> ";
+
+        private const string Result = " => ";
+
+        private readonly LispEnvironment environment;
+
         private readonly TextReader input;
         private readonly TextWriter output;
 
-        private readonly Tokenizer tokenizer = new Tokenizer();
         private readonly Reader reader = new Reader();
-        
-        private LispEnvironment environment;
-        private Symbol[] stars;
 
-        const string Prompt = "> ",
-                 ContPrompt = "  ",
-                     Result = " => ";
+        private readonly Symbol[] stars;
+
+        private readonly Tokenizer tokenizer = new Tokenizer();
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public Repl(TextReader input, TextWriter output)
         {
@@ -33,43 +43,17 @@ namespace Keel
             this.output = output;
         }
 
-        private LispEnvironment GetLoopEnvironment(Action action)
-        {
-            var symbol = environment.Symbols.Intern("QUIT");
-            var builtin = new DelegateBuiltin(symbol.Name, () => { action(); return T.True; });
+        #endregion
 
-            var loopEnv = new LispEnvironment(environment);
-            loopEnv.AddBinding(symbol, builtin);
-
-            for (int i = 0; i < stars.Length; i++)
-            {
-                loopEnv.AddBinding(stars[i], LispNull.Nil);
-            }
-
-            return loopEnv;
-        }
-
-        private Symbol[] InternStars()
-        {
-            var name = "";
-            var stars = new Symbol[3];
-
-            for (int i = 0; i < stars.Length; i++)
-            {
-                name += "*";
-                stars[i] = environment.Symbols.Intern(name);
-            }
-
-            return stars;
-        }
+        #region Public Methods and Operators
 
         public void Loop()
         {
             string line;
-            List<Token> unreadTokens = new List<Token>();
+            var unreadTokens = new List<Token>();
             bool loop = true;
             var loopEnv = GetLoopEnvironment(() => loop = false);
-            Queue<LispObject> previousResults = new Queue<LispObject>();
+            var previousResults = new Queue<LispObject>();
 
             output.Write(Prompt);
 
@@ -89,11 +73,11 @@ namespace Keel
 
                 IList<LispObject> forms;
 
-                bool doneReading = false;
+                bool doneReading;
                 
                 try
                 {
-                     doneReading = reader.TryRead(unreadTokens, loopEnv.Symbols, out forms);
+                    doneReading = reader.TryRead(unreadTokens, loopEnv.Symbols, out forms);
                 }
                 catch (Exception readEx)
                 {
@@ -109,7 +93,7 @@ namespace Keel
 
                     try
                     {
-                        var results = forms.Select(f => loopEnv.Eval(f)).ToList();
+                        var results = forms.Select(loopEnv.Eval).ToList();
 
                         foreach (var r in results)
                         {
@@ -144,5 +128,41 @@ namespace Keel
                 }
             }
         }
+
+        #endregion
+
+        #region Methods
+
+        private LispEnvironment GetLoopEnvironment(Action action)
+        {
+            var symbol = environment.Symbols.Intern("QUIT");
+            var builtin = new DelegateBuiltin(symbol.Name, () => { action(); return T.True; });
+
+            var loopEnv = new LispEnvironment(environment);
+            loopEnv.AddBinding(symbol, builtin);
+
+            for (int i = 0; i < stars.Length; i++)
+            {
+                loopEnv.AddBinding(stars[i], LispNull.Nil);
+            }
+
+            return loopEnv;
+        }
+
+        private Symbol[] InternStars()
+        {
+            var name = string.Empty;
+            var symbols = new Symbol[3];
+
+            for (int i = 0; i < symbols.Length; i++)
+            {
+                name += "*";
+                symbols[i] = environment.Symbols.Intern(name);
+            }
+
+            return symbols;
+        }
+
+        #endregion
     }
 }

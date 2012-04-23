@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-using Keel.Builtins;
-
-namespace Keel.SpecialForms
+﻿namespace Keel.SpecialForms
 {
-    public class SpecialFormException : Exception
-    {
-        public SpecialFormException(string msg)
-            : base(msg)
-        { }
-    }
+    using Keel.Objects;
 
     public abstract class SpecialForm
     {

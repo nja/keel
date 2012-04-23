@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Keel.Objects
+﻿namespace Keel.Objects
 {
+    using System.Globalization;
+
     public class LispDouble : LispNumber
     {
         public readonly double Value;
@@ -16,7 +13,7 @@ namespace Keel.Objects
 
         public LispDouble(LispInteger integer)
         {
-            this.Value = (double)integer.Value;
+            this.Value = integer.Value;
         }
 
         public LispDouble(LispBigInteger bigInteger)
@@ -26,7 +23,7 @@ namespace Keel.Objects
 
         public override string ToString()
         {
-            return Value.ToString("R", FormatProvider);
+            return Value.ToString("R", CultureInfo.InvariantCulture);
         }
 
         public override LispNumber Negate()

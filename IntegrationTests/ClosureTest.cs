@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-
-namespace IntegrationTests
+﻿namespace IntegrationTests
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class ClosureTest
     {
@@ -31,8 +27,7 @@ namespace IntegrationTests
 (define count-a (make-counter))
 (define count-b (make-counter))
 ");
-            test.Test("(count-a) (count-b) (count-a) (count-a) (count-b)",
-                "1", "1", "2", "3", "2");    
+            test.Test("(count-a) (count-b) (count-a) (count-a) (count-b)", "1", "1", "2", "3", "2");
         }
     }
 }

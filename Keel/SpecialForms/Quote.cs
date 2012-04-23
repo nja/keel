@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-using Keel.Builtins;
-
-namespace Keel.SpecialForms
+﻿namespace Keel.SpecialForms
 {
+    using Keel.Builtins;
+    using Keel.Objects;
+
     public class Quote : SpecialForm
     {
         public Quote()

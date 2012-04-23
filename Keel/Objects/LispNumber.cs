@@ -1,31 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Globalization;
-using System.Numerics;
-
-namespace Keel.Objects
+﻿namespace Keel.Objects
 {
+    using System;
+    using System.Numerics;
+
     public abstract class LispNumber : LispObject
     {
-        protected static IFormatProvider FormatProvider = CultureInfo.InvariantCulture;
-
         public abstract LispNumber Negate();
 
         public abstract LispNumber Add(LispNumber addend);
+
         public abstract LispNumber Add(LispInteger addend);
+
         public abstract LispNumber Add(LispDouble addend);
+
         public abstract LispNumber Add(LispBigInteger addend);
 
         public abstract bool NumberEquals(LispNumber number);
+
         public abstract bool NumberEquals(LispInteger number);
+
         public abstract bool NumberEquals(LispDouble number);
+
         public abstract bool NumberEquals(LispBigInteger number);
 
         public abstract int CompareTo(LispNumber number);
+
         public abstract int CompareTo(LispInteger number);
+
         public abstract int CompareTo(LispDouble number);
+
         public abstract int CompareTo(LispBigInteger number);
 
         protected LispNumber Add(LispInteger a, LispInteger b)
@@ -38,11 +41,6 @@ namespace Keel.Objects
             {
                 return new LispBigInteger((BigInteger)a.Value + b.Value);
             }
-        }
-
-        private bool IsIntegral(double x)
-        {
-            return Math.Truncate(x) == x;
         }
 
         protected LispNumber Add(LispDouble a, LispDouble b)
@@ -72,7 +70,7 @@ namespace Keel.Objects
 
         protected bool NumberEquals(LispInteger a, LispDouble b)
         {
-            return (double)a.Value == b.Value;
+            return a.Value == b.Value;
         }
 
         protected bool NumberEquals(LispBigInteger a, LispDouble b)
@@ -105,10 +103,13 @@ namespace Keel.Objects
             {
                 return -Math.Truncate(b.Value).CompareTo(b.Value);
             }
-            else
-            {
-                return truncatedCompare;
-            }
+            
+            return truncatedCompare;
+        }
+
+        private bool IsIntegral(double x)
+        {
+            return Math.Truncate(x) == x;
         }
     }
 }

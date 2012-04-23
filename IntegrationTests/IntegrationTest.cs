@@ -1,45 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using Keel.Builtins;
-using Keel;
-using Keel.Objects;
-
-namespace IntegrationTests
+﻿namespace IntegrationTests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Keel;
+    using Keel.Builtins;
+    using Keel.Objects;
+
+    using NUnit.Framework;
+
     public class IntegrationTest
     {
-        private LispEnvironment Env;
-        private Reader Reader;
+        #region Constants and Fields
+
+        private readonly LispEnvironment env;
+
+        private readonly Reader reader;
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public IntegrationTest()
         {
-            this.Reader = new Reader();
-            this.Env = new LibraryEnvironment(Reader);
+            this.reader = new Reader();
+            this.env = new LibraryEnvironment(this.reader);
         }
 
         public IntegrationTest(string setup)
             : this()
         {
-            Setup(setup);
+            this.Setup(setup);
         }
 
-        private void Setup(string setup)
-        {
-            var setupForms = Reader.Read(setup, Env.Symbols);
+        #endregion
 
-            foreach (var form in setupForms)
-            {
-                Env.Eval(form);
-            }
-        }
+        #region Public Methods and Operators
 
         public void Test(string input, params string[] output)
         {
-            var forms = Reader.Read(input, Env.Symbols);
-            var results = forms.Select(f => Env.Eval(f)).ToList();
+            IList<LispObject> forms = this.reader.Read(input, this.env.Symbols);
+            List<LispObject> results = forms.Select(f => this.env.Eval(f)).ToList();
 
             for (int i = 0; i < Math.Max(forms.Count, output.Length); i++)
             {
@@ -49,16 +51,32 @@ namespace IntegrationTests
                 }
                 else if (output.Length <= i)
                 {
-                    Assert.Fail("No output for input form: " + forms[i].ToString());
+                    Assert.Fail("No output for input form: " + forms[i]);
                 }
 
-                var printedForm = Print.PrintObject(forms[i]);
-                var printedResult = Print.PrintObject(results[i]);
+                string printedForm = Print.PrintObject(forms[i]);
+                string printedResult = Print.PrintObject(results[i]);
                 Assert.AreEqual(
-                    output[i],
-                    printedResult,
+                    output[i], 
+                    printedResult, 
                     string.Format("Wanted {0} got {1} from {2}", output[i], printedResult, printedForm));
-            }            
+            }
         }
+
+        #endregion
+
+        #region Methods
+
+        private void Setup(string setup)
+        {
+            IList<LispObject> setupForms = this.reader.Read(setup, this.env.Symbols);
+
+            foreach (LispObject form in setupForms)
+            {
+                this.env.Eval(form);
+            }
+        }
+
+        #endregion
     }
 }

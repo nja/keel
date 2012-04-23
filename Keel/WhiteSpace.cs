@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Keel
+﻿namespace Keel
 {
     public static class CharExtensions
     {
         public static bool IsWhiteSpace(this char ch)
         {
-            const string whitespace = " \t\r\n";
+            const string Whitespace = " \t\r\n";
 
-            return whitespace.IndexOf(ch) > -1;
+            return Whitespace.IndexOf(ch) > -1;
         }
     }
 }

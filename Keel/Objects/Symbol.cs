@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Keel.Objects
+﻿namespace Keel.Objects
 {
     public class Symbol : LispObject
     {
@@ -16,14 +11,14 @@ namespace Keel.Objects
 
         public string Name { get { return name; } }
 
-        public override string ToString()
-        {
-            return name;
-        }
-
         public static string Canonicalize(string name)
         {
             return name.ToUpperInvariant();
+        }
+
+        public override string ToString()
+        {
+            return name;
         }
 
         public bool SameName(string otherName)

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-using System.IO;
-
-namespace Keel
+﻿namespace Keel
 {
+    using System.IO;
+
+    using Keel.Objects;
+
     public class LibraryEnvironment : LispEnvironment
     {
         public LibraryEnvironment(Reader reader)

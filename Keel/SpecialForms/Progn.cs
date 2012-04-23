@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-
-namespace Keel.SpecialForms
+﻿namespace Keel.SpecialForms
 {
+    using Keel.Objects;
+
     public class Progn : SpecialForm
     {
-        const string name = "PROGN";
+        private const string PrognName = "PROGN";
 
         public Progn()
-            : base(name)
+            : base(PrognName)
         { }
+
+        public static Cons Wrap(Cons body, LispEnvironment env)
+        {
+            return new Cons(env.Symbols.Intern(PrognName), body);
+        }
 
         public override LispObject Eval(Cons body, LispEnvironment env)
         {
@@ -26,11 +27,6 @@ namespace Keel.SpecialForms
             while (!body.IsNil);
 
             return value;
-        }
-
-        public static Cons Wrap(Cons body, LispEnvironment env)
-        {
-            return new Cons(env.Symbols.Intern(name), body);
         }
     }
 }

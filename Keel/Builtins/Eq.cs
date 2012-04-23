@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-
-namespace Keel.Builtins
+﻿namespace Keel.Builtins
 {
+    using Keel.Objects;
+
     public class Eq : Builtin
     {
         public Eq()
@@ -21,15 +17,14 @@ namespace Keel.Builtins
             {
                 return T.True;
             }
-            else if (x is LispNumber && y is LispNumber
+            
+            if (x is LispNumber && y is LispNumber
                 && ((LispNumber)x).NumberEquals((LispNumber)y))
             {
                 return T.True;
             }
-            else
-            {
-                return LispNull.Nil;
-            }
+            
+            return LispNull.Nil;
         }
     }
 }

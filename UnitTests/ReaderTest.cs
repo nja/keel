@@ -1,52 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel;
-using NUnit.Framework;
-using Keel.Objects;
-using Keel.Builtins;
-
-namespace UnitTests
+﻿namespace UnitTests
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Keel;
+    using Keel.Builtins;
+    using Keel.Objects;
+
+    using NUnit.Framework;
+
     [TestFixture]
     public class ReaderTest
     {
-        [TestCase(0)]
-        [TestCase(1)]
-        [TestCase(2)]
-        public void ReadSymbolsTest(int count)
+        #region Constants and Fields
+
+        private int tokenCount;
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        [TestCase("foo", ".")]
+        [TestCase("foo", ".", "bar")]
+        [TestCase("(", ".", "foo")]
+        [TestCase("foo", ".", "bar", ")")]
+        [TestCase("(", "bar", ".")]
+        [TestCase("(", "bar", ".", ")")]
+        [ExpectedException(typeof(ReaderException))]
+        public void DotExceptionTest(params string[] tokenNames)
         {
             var symbols = new SymbolsTable();
             var reader = new Reader();
 
-            var tokens = GetTokens(count);
-
-            var result = reader.Read(tokens, symbols);
-
-            Assert.AreEqual(tokens.Count, result.Count);
-
-            for (int i = 0; i < tokens.Count; i++)
-            {
-                var token = tokens[i];
-                var symbol = (Symbol)result[i];
-                Assert.That(symbol.SameName(token.Name));
-            }
+            var tokens = GetTokens(tokenNames);
+            reader.Read(tokens, symbols);
         }
 
-        private int tokenCount = 0;
-
-        private List<Token> GetTokens(int count)
+        [Test]
+        public void DottedConsTest()
         {
-            var tokens = new List<Token>();
+            var symbols = new SymbolsTable();
+            var reader = new Reader();
 
-            for (int i = 0; i < count; i++)
-            {
-                var name = "TokenName" + tokenCount++;
-                tokens.Add(new Token(name));
-            }
+            const string CarName = "car";
+            const string CdrName = "cdr";
+            var tokens = GetTokens("(", CarName, ".", CdrName, ")");
 
-            return tokens;
+            var result = reader.Read(tokens, symbols);
+            Assert.AreEqual(1, result.Count);
+
+            var car = (Symbol)Car.Of(result[0]);
+            var cdr = (Symbol)Cdr.Of(result[0]);
+
+            Assert.That(car.SameName(CarName));
+            Assert.That(cdr.SameName(CdrName));
         }
 
         [Test]
@@ -55,7 +62,7 @@ namespace UnitTests
             var symbols = new SymbolsTable();
             var reader = new Reader();
 
-            var tokens = new string[] { "(", ")" }.Select(s => new Token(s));
+            var tokens = new[] { "(", ")" }.Select(s => new Token(s));
 
             var result = reader.Read(tokens, symbols);
 
@@ -72,8 +79,7 @@ namespace UnitTests
             var reader = new Reader();
             var innerTokens = GetTokens(count);
             
-            var tokens = new List<Token>();
-            tokens.Add(new Token("("));
+            var tokens = new List<Token> { new Token("(") };
             tokens.AddRange(innerTokens);
             tokens.Add(new Token(")"));
 
@@ -84,33 +90,17 @@ namespace UnitTests
             AssertList(result[0], innerTokens);
         }
 
-        private void AssertList(LispObject list, List<Token> tokens)
-        {
-            if (list.IsNil)
-            {
-                Assert.IsEmpty(tokens);
-            }
-            else
-            {
-                var cons = (Cons)list;
-                var symbol = (Symbol)cons.Car;
-                
-                Assert.That(symbol.SameName(tokens[0].Name));
-
-                AssertList(cons.Cdr, tokens.GetRange(1, tokens.Count - 1));
-            }
-        }
-
         [Test]
         public void ReadNestedLists()
         {
             var symbols = new SymbolsTable();
             var reader = new Reader();
 
-            var tokens = new string[] {
+            var tokens = new[] 
+            {
                 // (a ((b)) ())
-                "(","a", "(","(","b",")",")", "(",")" ,")"
-            }.Select(s => new Token(s)).ToList<Token>();
+                "(", "a", "(", "(", "b", ")", ")", "(", ")", ")"
+            }.Select(s => new Token(s)).ToList();
 
             var result = reader.Read(tokens, symbols);
 
@@ -133,29 +123,34 @@ namespace UnitTests
             Assert.That(cddr.Cdr.IsNil);
         }
 
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        public void ReadSymbolsTest(int count)
+        {
+            var symbols = new SymbolsTable();
+            var reader = new Reader();
+
+            var tokens = GetTokens(count);
+
+            var result = reader.Read(tokens, symbols);
+
+            Assert.AreEqual(tokens.Count, result.Count);
+
+            for (int i = 0; i < tokens.Count; i++)
+            {
+                var token = tokens[i];
+                var symbol = (Symbol)result[i];
+                Assert.That(symbol.SameName(token.Name));
+            }
+        }
+
         [TestCase("(")]
         [TestCase(")")]
         [ExpectedException(typeof(ReaderException))]
         public void ReadUnbalancedExceptionTest(string tokenName)
         {
-            ReadUnbalancedExceptionTest(new string[] { tokenName });
-        }
-
-        [TestCase(")")]
-        [ExpectedException(typeof(ReaderException))]
-        public void TryReadUnbalancedExceptionTest(string tokenName)
-        {
-            TryReadUnbalancedExceptionTest(new string[] { tokenName });
-        }
-
-        private List<Token> GetTokens(IEnumerable<string> names)
-        {
-            return names.Select(n => new Token(n)).ToList<Token>();
-        }
-
-        private List<Token> GetTokens(params string[] names)
-        {
-            return GetTokens((IEnumerable<string>)names);
+            ReadUnbalancedExceptionTest(new[] { tokenName });
         }
 
         [TestCase("(", "a")]
@@ -172,6 +167,45 @@ namespace UnitTests
             reader.Read(tokens, symbols);
         }
 
+        [Test]
+        public void SameInternedSymbolTest()
+        {
+            var symbols = new SymbolsTable();
+            var reader = new Reader();
+
+            const string Name = "foo";
+            var tokens = GetTokens(Name, Name);
+
+            var result = reader.Read(tokens, symbols);
+            Assert.AreSame(result[0], result[1]);
+        }
+
+        [Test]
+        public void TickQuoteAtomTest()
+        {
+            var symbols = new SymbolsTable();
+            var reader = new Reader();
+
+            const string Name = "quoted";
+            var tokens = GetTokens("'", Name);
+
+            var result = reader.Read(tokens, symbols);
+            Assert.AreEqual(1, result.Count);
+            
+            var quote = (Symbol)Car.Of(result[0]);
+            var quoted = (Symbol)Car.Of(Cdr.Of(result[0]));
+            
+            Assert.That(quote.SameName("quote"));
+            Assert.That(quoted.SameName(Name));
+        }
+
+        [TestCase(")")]
+        [ExpectedException(typeof(ReaderException))]
+        public void TryReadUnbalancedExceptionTest(string tokenName)
+        {
+            TryReadUnbalancedExceptionTest(new[] { tokenName });
+        }
+
         [TestCase("(", "a", ")", ")")]
         [ExpectedException(typeof(ReaderException))]
         public void TryReadUnbalancedExceptionTest(params string[] tokenNames)
@@ -185,71 +219,50 @@ namespace UnitTests
             reader.TryRead(tokens, symbols, out result);
         }
 
-        [Test]
-        public void SameInternedSymbolTest()
+        #endregion
+
+        #region Methods
+
+        private void AssertList(LispObject list, List<Token> tokens)
         {
-            var symbols = new SymbolsTable();
-            var reader = new Reader();
+            if (list.IsNil)
+            {
+                Assert.IsEmpty(tokens);
+            }
+            else
+            {
+                var cons = (Cons)list;
+                var symbol = (Symbol)cons.Car;
+                
+                Assert.That(symbol.SameName(tokens[0].Name));
 
-            var name = "foo";
-            var tokens = GetTokens(name, name);
-
-            var result = reader.Read(tokens, symbols);
-            Assert.AreSame(result[0], result[1]);
+                AssertList(cons.Cdr, tokens.GetRange(1, tokens.Count - 1));
+            }
         }
 
-        [Test]
-        public void TickQuoteAtomTest()
+        private List<Token> GetTokens(int count)
         {
-            var symbols = new SymbolsTable();
-            var reader = new Reader();
+            var tokens = new List<Token>();
 
-            var name = "quoted";
-            var tokens = GetTokens("'", name);
+            for (int i = 0; i < count; i++)
+            {
+                var name = "TokenName" + tokenCount++;
+                tokens.Add(new Token(name));
+            }
 
-            var result = reader.Read(tokens, symbols);
-            Assert.AreEqual(1, result.Count);
-            
-            var quote = (Symbol)Car.Of(result[0]);
-            var quoted = (Symbol)Car.Of(Cdr.Of(result[0]));
-            
-            Assert.That(quote.SameName("quote"));
-            Assert.That(quoted.SameName(name));
+            return tokens;
         }
 
-        [Test]
-        public void DottedConsTest()
+        private List<Token> GetTokens(IEnumerable<string> names)
         {
-            var symbols = new SymbolsTable();
-            var reader = new Reader();
-
-            string carName = "car", cdrName = "cdr";
-            var tokens = GetTokens("(", carName, ".", cdrName, ")");
-
-            var result = reader.Read(tokens, symbols);
-            Assert.AreEqual(1, result.Count);
-
-            var car = (Symbol)Car.Of(result[0]);
-            var cdr = (Symbol)Cdr.Of(result[0]);
-
-            Assert.That(car.SameName(carName));
-            Assert.That(cdr.SameName(cdrName));
+            return names.Select(n => new Token(n)).ToList();
         }
 
-        [TestCase("foo", ".")]
-        [TestCase("foo", ".", "bar")]
-        [TestCase("(", ".", "foo")]
-        [TestCase("foo", ".", "bar", ")")]
-        [TestCase("(", "bar", ".")]
-        [TestCase("(", "bar", ".", ")")]
-        [ExpectedException(typeof(ReaderException))]
-        public void DotExceptionTest(params string[] tokenNames)
+        private List<Token> GetTokens(params string[] names)
         {
-            var symbols = new SymbolsTable();
-            var reader = new Reader();
-
-            var tokens = GetTokens(tokenNames);
-            reader.Read(tokens, symbols);
+            return GetTokens((IEnumerable<string>)names);
         }
+
+        #endregion
     }
 }

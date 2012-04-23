@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-
-namespace Keel.Builtins
+﻿namespace Keel.Builtins
 {
+    using Keel.Objects;
+
     public class Add : Builtin
     {
         public Add()

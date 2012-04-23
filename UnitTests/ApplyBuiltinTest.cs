@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-using Keel.Builtins;
-using NUnit.Framework;
-
-namespace UnitTests
+﻿namespace UnitTests
 {
+    using Keel.Objects;
+    using Keel.Builtins;
+
+    using NUnit.Framework;
+
     [TestFixture]
     public class ApplyBuiltinTest
     {

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel;
-using NUnit.Framework;
-
-namespace UnitTests
+﻿namespace UnitTests
 {
+    using System.Collections.Generic;
+
+    using Keel;
+
+    using NUnit.Framework;
+
     [TestFixture]
     public class TokenizerTest
     {
@@ -14,7 +13,7 @@ namespace UnitTests
         public void EmptyStringNoTokensTest()
         {
             var tokenizer = new Tokenizer();
-            var tokens = new List<Token>(tokenizer.Tokenize(""));
+            var tokens = new List<Token>(tokenizer.Tokenize(string.Empty));
             Assert.IsEmpty(tokens);
         }
 

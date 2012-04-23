@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-
-namespace Keel.SpecialForms
+﻿namespace Keel.SpecialForms
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Keel.Objects;
+
     public class Do : SpecialForm
     {
         public Do()
@@ -59,47 +58,6 @@ namespace Keel.SpecialForms
             for (int i = 0; i < varSymbols.Count; i++)
             {
                 doEnv.AddBinding(varSymbols[i], varInitValues[i]);
-            }
-        }
-
-        private List<KeyValuePair<Symbol, LispObject>> GetVarInits(Cons varForms, LispEnvironment env)
-        {
-            var list = new List<KeyValuePair<Symbol, LispObject>>();
-
-            foreach (var varForm in varForms)
-            {
-                var varSymbol = varForm.As<Cons>().Car.As<Symbol>();
-                var varInitForm = varForm.As<Cons>().Cdr.As<Cons>().Car;
-                var varValue = env.Eval(varInitForm);
-
-                list.Add(new KeyValuePair<Symbol, LispObject>(varSymbol, varInitForm));
-            }
-
-            return list;
-        }
-    }
-
-    public class DoStar : Do
-    {
-        public DoStar()
-            : base("DO*")
-        { }
-
-        protected override void SetInitValues(LispEnvironment doEnv, List<Symbol> varSymbols, List<LispObject> varInitForms)
-        {
-            for (int i = 0; i < varSymbols.Count; i++)
-            {
-                var val = doEnv.Eval(varInitForms[i]);
-                doEnv.AddBinding(varSymbols[i], val);
-            }
-        }
-
-        protected override void SetStepValues(LispEnvironment doEnv, List<Symbol> varSymbols, List<LispObject> varStepForms)
-        {
-            for (int i = 0; i < varSymbols.Count; i++)
-            {
-                var val = doEnv.Eval(varStepForms[i]);
-                doEnv.SetValue(varSymbols[i], val);
             }
         }
     }

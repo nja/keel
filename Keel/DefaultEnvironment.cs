@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-using Keel.Builtins;
-
-namespace Keel
+﻿namespace Keel
 {
+    using Keel.Builtins;
+    using Keel.Objects;
+
     public class DefaultEnvironment : LispEnvironment
     {
         public DefaultEnvironment()

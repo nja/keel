@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Globalization;
-
-namespace Keel
+﻿namespace Keel
 {
+    using System.Collections.Generic;
+    using System.IO;
+
     public class Tokenizer
     {
+        #region Public Methods and Operators
+
         public IEnumerable<Token> Tokenize(TextReader reader)
         {
             var tokens = new LinkedList<Token>();
@@ -40,78 +38,34 @@ namespace Keel
             return tokens;
         }
 
-        abstract class State
+        #endregion
+
+        private class BuildingToken : State
         {
-            private readonly ICollection<Token> tokens;
+            #region Constants and Fields
 
-            protected State(ICollection<Token> tokens)
-            {
-                this.tokens = tokens;
-            }
+            private const string OneCharTokens = "()'";
 
-            protected State(State state)
-            {
-                this.tokens = state.tokens;
-            }
+            private string token = string.Empty;
 
-            protected void Add(Token token)
-            {
-                tokens.Add(token);
-            }
+            #endregion
 
-            public abstract State Handle(char ch);
-            public abstract void End();
-        }
-
-        class SkippingWhitespace : State
-        {
-            public SkippingWhitespace(State state)
-                : base(state)
-            { }
-
-            public SkippingWhitespace(ICollection<Token> tokens)
-                : base(tokens)
-            { }
-
-            public override State Handle(char ch)
-            {
-                if (ch.IsWhiteSpace())
-                {
-                    return this;
-                }
-                else
-                {
-                    var next = new BuildingToken(this);
-                    return next.Handle(ch);
-                }
-            }
-
-            public override void End()
-            { }
-        }
-
-        class BuildingToken : State
-        {
-            private string token = "";
+            #region Constructors and Destructors
 
             public BuildingToken(State state)
                 : base(state)
             { }
 
-            public BuildingToken(ICollection<Token> tokens)
-                : base(tokens)
-            { }
+            #endregion
 
-            const string OneCharTokens = "()'";
+            #region Public Methods and Operators
 
-            private bool IsOneCharToken(char ch)
+            public override void End()
             {
-                return OneCharTokens.IndexOf(ch) > -1;
-            }
-
-            private bool IsFirstChar()
-            {
-                return token == "";
+                if (!IsFirstChar())
+                {
+                    Add(new Token(token));
+                }
             }
 
             public override State Handle(char ch)
@@ -127,45 +81,105 @@ namespace Keel
 
                     return new SkippingWhitespace(this);
                 }
-                else if (ch.IsWhiteSpace())
+                
+                if (ch.IsWhiteSpace())
                 {
-                    Add(new Token(token));
+                    this.Add(new Token(this.token));
                     return new SkippingWhitespace(this);
                 }
-                else
-                {
-                    token += ch;
-                    return this;
-                }
+                
+                this.token += ch;
+                return this;
             }
+
+            #endregion
+
+            #region Methods
+
+            private bool IsFirstChar()
+            {
+                return token == string.Empty;
+            }
+
+            private bool IsOneCharToken(char ch)
+            {
+                return OneCharTokens.IndexOf(ch) > -1;
+            }
+
+            #endregion
+        }
+
+        private class SkippingWhitespace : State
+        {
+            #region Constructors and Destructors
+
+            public SkippingWhitespace(State state)
+                : base(state)
+            { }
+
+            public SkippingWhitespace(ICollection<Token> tokens)
+                : base(tokens)
+            { }
+
+            #endregion
+
+            #region Public Methods and Operators
 
             public override void End()
+            { }
+
+            public override State Handle(char ch)
             {
-                if (!IsFirstChar())
+                if (ch.IsWhiteSpace())
                 {
-                    Add(new Token(token));
+                    return this;
                 }
+                
+                var next = new BuildingToken(this);
+                return next.Handle(ch);
             }
+
+            #endregion
         }
-    }
 
-    public class Token
-    {
-        private readonly string name;
-
-        public Token(string name)
+        private abstract class State
         {
-            if (name == null) throw new ArgumentNullException("name");
-            if (name == "") throw new ArgumentException("Empty token name", "name");
-            if (name[0].IsWhiteSpace()) throw new ArgumentException("Whitespace name", "name");
+            #region Constants and Fields
 
-            this.name = name;
+            private readonly ICollection<Token> tokens;
+
+            #endregion
+
+            #region Constructors and Destructors
+
+            protected State(ICollection<Token> tokens)
+            {
+                this.tokens = tokens;
+            }
+
+            protected State(State state)
+            {
+                this.tokens = state.tokens;
+            }
+
+            #endregion
+
+            #region Public Methods and Operators
+
+            public abstract void End();
+
+            public abstract State Handle(char ch);
+
+            #endregion
+
+            #region Methods
+
+            protected void Add(Token token)
+            {
+                tokens.Add(token);
+            }
+
+            #endregion
         }
-
-        public Token(char ch)
-            : this(ch.ToString())
-        { }
-
-        public string Name { get { return name; } }
     }
 }

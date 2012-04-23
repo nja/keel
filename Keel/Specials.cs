@@ -1,16 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-using Keel.Builtins;
-using Keel.SpecialForms;
-
-namespace Keel
+﻿namespace Keel
 {
+    using System.Collections.Generic;
+
+    using Keel.Builtins;
+    using Keel.Objects;
+    using Keel.SpecialForms;
+
     public class Specials
     {
+        #region Constants and Fields
+
         private readonly Dictionary<string, SpecialForm> specials = new Dictionary<string, SpecialForm>();
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public Specials()
         {
@@ -26,20 +30,9 @@ namespace Keel
             Add(new SetForm());
         }
 
-        private void Add(SpecialForm special)
-        {
-            specials.Add(special.Name, special);
-        }
+        #endregion
 
-        public bool IsSpecial(Cons form)
-        {
-            var car = Car.Of(form);
-            var cdr = Cdr.Of(form);
-
-            return car is Symbol
-                && cdr is Cons
-                && specials.ContainsKey(car.As<Symbol>().Name);
-        }
+        #region Public Methods and Operators
 
         public LispObject Eval(Cons form, LispEnvironment env)
         {
@@ -54,5 +47,26 @@ namespace Keel
 
             return special.Eval(body, env);
         }
+
+        public bool IsSpecial(Cons form)
+        {
+            var car = Car.Of(form);
+            var cdr = Cdr.Of(form);
+
+            return car is Symbol
+                   && cdr is Cons
+                   && specials.ContainsKey(car.As<Symbol>().Name);
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void Add(SpecialForm special)
+        {
+            specials.Add(special.Name, special);
+        }
+
+        #endregion
     }
 }

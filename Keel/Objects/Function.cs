@@ -1,38 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Keel.Objects
+﻿namespace Keel.Objects
 {
-    public class FunctionException : Exception
-    {
-        public FunctionException(string msg)
-            : base(msg)
-        { }
-    }
-
     public abstract class Function : LispObject
     {
-        private readonly LispObject args;
-        private readonly Cons body;
+        #region Constants and Fields
 
-        public Function(LispObject args, Cons body)
+        private readonly LispObject args;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public Function(LispObject args)
         {
             this.args = args;
-            this.body = body;
         }
 
-        public abstract LispObject Apply(Cons arguments, LispEnvironment env);
+        #endregion
+
+        #region Public Properties
 
         public LispObject Arguments
         {
             get { return args; }
         }
 
+        #endregion
+
+        #region Properties
+
         protected string ArgumentsString
         {
             get { return Arguments.IsNil ? "()" : Arguments.ToString(); }
         }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public abstract LispObject Apply(Cons arguments, LispEnvironment env);
+
+        #endregion
     }
 }

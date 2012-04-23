@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-
-namespace Keel.Builtins
+﻿namespace Keel.Builtins
 {
+    using System;
+
+    using Keel.Objects;
+
     public class NumberInequality : Builtin
     {
         private readonly Func<LispNumber, LispNumber, bool> test;
 
-        public NumberInequality(string name, Func<LispNumber,LispNumber,bool> test)
+        public NumberInequality(string name, Func<LispNumber, LispNumber, bool> test)
             : base(name)
         {
             this.test = test;

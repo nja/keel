@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-
-namespace Keel.Builtins
+﻿namespace Keel.Builtins
 {
+    using Keel.Objects;
+
     public class Consp : Builtin
     {
         public Consp()
@@ -18,10 +14,8 @@ namespace Keel.Builtins
             {
                 return T.True;
             }
-            else
-            {
-                return LispNull.Nil;
-            }
+            
+            return LispNull.Nil;
         }
     }
 }

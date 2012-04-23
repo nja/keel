@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-
-namespace Keel.Builtins
+﻿namespace Keel.Builtins
 {
+    using Keel.Objects;
+
     public class Subtract : Builtin
     {
         public Subtract()
@@ -18,21 +14,20 @@ namespace Keel.Builtins
             {
                 throw new EvaluationException("Too few arguments to " + Name);
             }
-            else if (arguments.Cdr.IsNil)
+            
+            if (arguments.Cdr.IsNil)
             {
                 return arguments.Car.As<LispNumber>().Negate();
             }
-            else
+            
+            var difference = arguments.Car.As<LispNumber>();
+
+            foreach (var subtrahend in arguments.Cdr.As<Cons>())
             {
-                var difference = arguments.Car.As<LispNumber>();
-
-                foreach (var subtrahend in arguments.Cdr.As<Cons>())
-                {
-                    difference = difference.Add(subtrahend.As<LispNumber>().Negate());
-                }
-
-                return difference;
+                difference = difference.Add(subtrahend.As<LispNumber>().Negate());
             }
+
+            return difference;
         }
     }
 }

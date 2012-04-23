@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel;
-
-namespace KeelConsole
+﻿namespace KeelConsole
 {
-    class Program
+    using System;
+
+    using Keel;
+    
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             try
             {

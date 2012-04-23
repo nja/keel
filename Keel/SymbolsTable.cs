@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-
-namespace Keel
+﻿namespace Keel
 {
+    using System.Collections.Generic;
+
+    using Keel.Objects;
+
     public class SymbolsTable
     {
         private readonly Dictionary<string, Symbol> symbols = new Dictionary<string, Symbol>();

@@ -1,27 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-using System.IO;
-using System.Globalization;
-using System.Numerics;
-
-namespace Keel
+﻿namespace Keel
 {
-    public class ReaderException : Exception
-    {
-        public ReaderException(string msg)
-            : base(msg)
-        { }
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Numerics;
 
-        public ReaderException(string msg, Exception inner)
-            : base(msg, inner)
-        { }
-    }
+    using Keel.Objects;
 
     public class Reader
     {
+        #region Constants and Fields
+
+        private const NumberStyles DoubleStyle = NumberStyles.Float;
+
+        private const NumberStyles IntegerStyle = NumberStyles.Integer;
+
+        private static readonly IFormatProvider FormatProvider = CultureInfo.InvariantCulture;
+
+        #endregion
+
+        #region Public Methods and Operators
+
         public IList<LispObject> Read(TextReader text, SymbolsTable symbols)
         {
             var tokens = new Tokenizer().Tokenize(text);
@@ -37,6 +37,21 @@ namespace Keel
         public IList<LispObject> Read(IEnumerable<Token> tokens, SymbolsTable symbols)
         {
             IList<LispObject> result;
+
+            if (!TryRead(tokens, symbols, out result))
+            {
+                throw new ReaderException("Unbalanced parens");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Assumes tokens.Current is available
+        /// </summary>
+        public LispObject Read(IEnumerator<Token> tokens, SymbolsTable symbols)
+        {
+            LispObject result;
 
             if (!TryRead(tokens, symbols, out result))
             {
@@ -69,21 +84,6 @@ namespace Keel
         }
 
         /// <summary>
-        /// Assumes tokens.Current is available
-        /// </summary>
-        public LispObject Read(IEnumerator<Token> tokens, SymbolsTable symbols)
-        {
-            LispObject result;
-
-            if (!TryRead(tokens, symbols, out result))
-            {
-                throw new ReaderException("Unbalanced parens");
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Tries to read the next form. Returns false when a complete form wasn't read.
         /// Assumes tokens.Current is available.
         /// </summary>
@@ -93,49 +93,30 @@ namespace Keel
             {
                 return TryReadList(tokens, symbols, out result);
             }
-            else if (ClosesList(tokens.Current))
+            
+            if (this.ClosesList(tokens.Current))
             {
                 throw new ReaderException("Unbalanced parens");
             }
-            else if (IsDot(tokens.Current))
+            
+            if (this.IsDot(tokens.Current))
             {
                 throw new ReaderException("Spurious dot");
             }
-            else if (QuotesNext(tokens.Current))
+            
+            if (this.QuotesNext(tokens.Current))
             {
                 tokens.MoveNext();
 
                 var quote = symbols.Intern("QUOTE");
-                var next = Read(tokens, symbols);
+                var next = this.Read(tokens, symbols);
 
-                result = Cons.ToList(new LispObject[] { quote, next });
+                result = Cons.ToList(new[] { quote, next });
                 return true;
             }
-            else
-            {
-                result = ReadAtom(tokens, symbols);
-                return true;
-            }
-        }
-
-        private bool QuotesNext(Token token)
-        {
-            return token.Name == "'";
-        }
-
-        private bool OpensList(Token token)
-        {
-            return token.Name == "(";
-        }
-
-        private bool ClosesList(Token token)
-        {
-            return token.Name == ")";
-        }
-
-        private bool IsDot(Token token)
-        {
-            return token.Name == ".";
+            
+            result = this.ReadAtom(tokens, symbols);
+            return true;
         }
 
         /// <summary>
@@ -149,7 +130,7 @@ namespace Keel
             }
 
             Cons firstCons = null, 
-                previousCons = null;
+                 previousCons = null;
 
             while (tokens.MoveNext())
             {
@@ -198,13 +179,11 @@ namespace Keel
                         result = firstCons;
                         return true;
                     }
-                    else
-                    {
-                        break;
-                    }
+                    
+                    break;
                 }
 
-                Cons cons = new Cons();
+                var cons = new Cons();
                 firstCons = firstCons ?? cons;
 
                 if (previousCons != null)
@@ -229,11 +208,29 @@ namespace Keel
             return false;
         }
 
-        private const NumberStyles IntegerStyle = NumberStyles.Integer;
+        #endregion
 
-        private const NumberStyles DoubleStyle = NumberStyles.Float;
+        #region Methods
 
-        private static readonly IFormatProvider FormatProvider = CultureInfo.InvariantCulture;
+        private bool ClosesList(Token token)
+        {
+            return token.Name == ")";
+        }
+
+        private bool IsDot(Token token)
+        {
+            return token.Name == ".";
+        }
+
+        private bool OpensList(Token token)
+        {
+            return token.Name == "(";
+        }
+
+        private bool QuotesNext(Token token)
+        {
+            return token.Name == "'";
+        }
 
         private LispObject ReadAtom(IEnumerator<Token> tokens, SymbolsTable symbols)
         {
@@ -246,11 +243,13 @@ namespace Keel
             {
                 return new LispInteger(intValue);
             }
-            else if (BigInteger.TryParse(name, IntegerStyle, FormatProvider, out bigIntValue))
+            
+            if (BigInteger.TryParse(name, IntegerStyle, FormatProvider, out bigIntValue))
             {
                 return new LispBigInteger(bigIntValue);
             }
-            else if (double.TryParse(name, DoubleStyle, FormatProvider, out doubleValue))
+            
+            if (double.TryParse(name, DoubleStyle, FormatProvider, out doubleValue))
             {
                 return new LispDouble(doubleValue);
             }
@@ -258,11 +257,11 @@ namespace Keel
             if (Symbol.Canonicalize(name) == LispNull.Name)
             {
                 return LispNull.Nil;
-            } 
-            else
-            {
-                return symbols.Intern(name);
             }
+            
+            return symbols.Intern(name);
         }
+
+        #endregion
     }
 }

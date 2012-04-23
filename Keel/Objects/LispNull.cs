@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Keel.Objects
+﻿namespace Keel.Objects
 {
+    using System;
+
     public class LispNull : Cons
     {
         public static readonly LispNull Nil = new LispNull();

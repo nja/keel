@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Keel.Objects
+﻿namespace Keel.Objects
 {
     public class Lambda : Function
     {
@@ -16,7 +11,7 @@ namespace Keel.Objects
         { }
 
         public Lambda(string name, LispObject lambdaList, Cons body, LispEnvironment closure)
-            : base(lambdaList, body)
+            : base(lambdaList)
         {
             this.name = name;
             this.body = body;
@@ -37,10 +32,8 @@ namespace Keel.Objects
             {
                 return string.Format("<Anynomous function: {0}>", ArgumentsString);
             }
-            else
-            {
-                return string.Format("<Named function {0}: {1}>", name, ArgumentsString);
-            }
+            
+            return string.Format("<Named function {0}: {1}>", this.name, this.ArgumentsString);
         }
     }
 }

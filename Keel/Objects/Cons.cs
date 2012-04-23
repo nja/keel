@@ -1,15 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Builtins;
-
-namespace Keel.Objects
+﻿namespace Keel.Objects
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Keel.Builtins;
+
     public class Cons : LispObject, IEnumerable<LispObject>
     {
+        #region Constants and Fields
+
         private LispObject car, cdr;
-        
+
+        #endregion
+
+        #region Constructors and Destructors
+
         public Cons()
         {
             this.car = LispNull.Nil;
@@ -22,49 +28,9 @@ namespace Keel.Objects
             this.cdr = cdr;
         }
 
-        public Cons Map(Func<LispObject, LispObject> fn)
-        {
-            return ToList(this.Select(fn));
-        }
+        #endregion
 
-        public static Cons ToList(params LispObject[] elements)
-        {
-            return ToList((IEnumerable<LispObject>)elements);
-        }
-
-        public static Cons ToList(IEnumerable<LispObject> elements)
-        {
-            var list = elements.ToList();
-            list.Add(LispNull.Nil);
-            return (Cons)ToDottedList(list);
-        }
-
-        public static LispObject ToDottedList(params LispObject[] elements)
-        {
-            return ToDottedList((IEnumerable<LispObject>)elements);
-        }
-
-        public static LispObject ToDottedList(IEnumerable<LispObject> elements)
-        {
-            var list = elements.ToList();
-            
-            if (list.Count == 0)
-            {
-                return LispNull.Nil;
-            }
-            else
-            {
-                list.Reverse();
-                LispObject cdr = list[0];
-
-                foreach (var car in list.Skip(1))
-                {
-                    cdr = new Cons(car, cdr);
-                }
-
-                return cdr;
-            }
-        }
+        #region Public Properties
 
         public virtual LispObject Car
         {
@@ -88,16 +54,65 @@ namespace Keel.Objects
             get { return true; }
         }
 
-        #region IEnumerable<LispObject> Members
+        #endregion
+
+        #region Public Methods and Operators
+
+        public static LispObject ToDottedList(params LispObject[] elements)
+        {
+            return ToDottedList((IEnumerable<LispObject>)elements);
+        }
+
+        public static LispObject ToDottedList(IEnumerable<LispObject> elements)
+        {
+            var list = elements.ToList();
+            
+            if (list.Count == 0)
+            {
+                return LispNull.Nil;
+            }
+            
+            list.Reverse();
+            LispObject cdr = list[0];
+
+            foreach (var car in list.Skip(1))
+            {
+                cdr = new Cons(car, cdr);
+            }
+
+            return cdr;
+        }
+
+        public static Cons ToList(params LispObject[] elements)
+        {
+            return ToList((IEnumerable<LispObject>)elements);
+        }
+
+        public static Cons ToList(IEnumerable<LispObject> elements)
+        {
+            var list = elements.ToList();
+            list.Add(LispNull.Nil);
+            return (Cons)ToDottedList(list);
+        }
 
         public IEnumerator<LispObject> GetEnumerator()
         {
             return new ListEnumerator(this);
         }
 
+        public Cons Map(Func<LispObject, LispObject> fn)
+        {
+            return ToList(this.Select(fn));
+        }
+
+        public override string ToString()
+        {
+            return Print.PrintObject(this);
+        }
+
         #endregion
 
-        #region IEnumerable Members
+        #region Explicit Interface Methods
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
@@ -105,10 +120,5 @@ namespace Keel.Objects
         }
 
         #endregion
-
-        public override string ToString()
-        {
-            return Print.PrintObject(this);
-        }
     }
 }

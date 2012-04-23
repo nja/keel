@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Numerics;
-
-namespace Keel.Objects
+﻿namespace Keel.Objects
 {
+    using System.Globalization;
+    using System.Numerics;
+
     public class LispBigInteger : LispNumber
     {
         public readonly BigInteger Value;
@@ -22,7 +19,7 @@ namespace Keel.Objects
 
         public override string ToString()
         {
-            return Value.ToString(FormatProvider);
+            return Value.ToString(CultureInfo.InvariantCulture);
         }
 
         public override LispNumber Negate()

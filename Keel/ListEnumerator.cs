@@ -1,17 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel.Objects;
-
-namespace Keel
+﻿namespace Keel
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Keel.Objects;
+
     public class ListEnumerator : IEnumerator<LispObject>
     {
-        static readonly Cons BeforeFirst = new Cons();
+        #region Constants and Fields
+
+        private static readonly Cons BeforeFirst = new Cons();
+
+        private readonly Cons first;
 
         private Cons current;
-        private readonly Cons first;
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public ListEnumerator(Cons first)
         {
@@ -19,7 +25,9 @@ namespace Keel
             this.current = BeforeFirst;
         }
 
-        #region IEnumerator<LispObject> Members
+        #endregion
+
+        #region Public Properties
 
         public LispObject Current
         {
@@ -41,20 +49,20 @@ namespace Keel
 
         #endregion
 
-        #region IDisposable Members
+        #region Explicit Interface Properties
 
-        public void Dispose()
+        object System.Collections.IEnumerator.Current
         {
-            GC.SuppressFinalize(this);
+            get { return this.Current; }
         }
 
         #endregion
 
-        #region IEnumerator Members
+        #region Public Methods and Operators
 
-        object System.Collections.IEnumerator.Current
+        public void Dispose()
         {
-            get { return Current; }
+            GC.SuppressFinalize(this);
         }
 
         public bool MoveNext()
@@ -65,7 +73,7 @@ namespace Keel
             }
             else
             {
-                Cons cdr = current.Cdr as Cons;
+                var cdr = current.Cdr as Cons;
 
                 if (cdr == null)
                 {

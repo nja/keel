@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Keel;
-using NUnit.Framework;
-using Keel.Objects;
-
-namespace UnitTests
+﻿namespace UnitTests
 {
+    using System.Collections.Generic;
+
+    using Keel;
+    using Keel.Objects;
+
+    using NUnit.Framework;
+
     [TestFixture]
     public class ListEnumeratorTest
     {
@@ -17,6 +16,8 @@ namespace UnitTests
             var enumerator = new ListEnumerator(LispNull.Nil);
             Assert.IsFalse(enumerator.MoveNext());
         }
+
+        private int symbolCount;
 
         [Test]
         public void SingleConsTest()
@@ -45,8 +46,6 @@ namespace UnitTests
                 Assert.AreSame(symbols[i], list[i]);
             }
         }
-
-        int symbolCount = 0;
 
         private List<Symbol> GetSymbols(int count)
         {
