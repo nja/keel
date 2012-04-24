@@ -5,23 +5,11 @@
 
     using NUnit.Framework;
 
-    /// <summary>
-    /// The builtin tests.
-    /// </summary>
     [TestFixture]
     public class BuiltinTests
     {
         #region Public Methods and Operators
 
-        /// <summary>
-        /// The add.
-        /// </summary>
-        /// <param name="input">
-        /// The input.
-        /// </param>
-        /// <param name="output">
-        /// The output.
-        /// </param>
         [TestCase("(+)", "0")]
         [TestCase("(+ 1)", "1")]
         [TestCase("(+ 1 2)", "3")]
@@ -35,15 +23,6 @@
             new IntegrationTest().Test(input, output);
         }
 
-        /// <summary>
-        /// The apply.
-        /// </summary>
-        /// <param name="input">
-        /// The input.
-        /// </param>
-        /// <param name="output">
-        /// The output.
-        /// </param>
         [TestCase("(apply + nil)", "0")]
         [TestCase("(apply + '(1))", "1")]
         [TestCase("(apply + 1 '(2))", "3")]
@@ -54,15 +33,6 @@
             new IntegrationTest().Test(input, output);
         }
 
-        /// <summary>
-        /// The atom.
-        /// </summary>
-        /// <param name="input">
-        /// The input.
-        /// </param>
-        /// <param name="output">
-        /// The output.
-        /// </param>
         [TestCase("(atom nil)", "T")]
         [TestCase("(atom 'x)", "T")]
         [TestCase("(atom 1)", "T")]
@@ -75,15 +45,6 @@
             new IntegrationTest().Test(input, output);
         }
 
-        /// <summary>
-        /// The car.
-        /// </summary>
-        /// <param name="input">
-        /// The input.
-        /// </param>
-        /// <param name="output">
-        /// The output.
-        /// </param>
         [TestCase("(car nil)", "NIL")]
         [TestCase("(car '(a))", "A")]
         [TestCase("(car '((1 2) 3))", "(1 2)")]
@@ -92,15 +53,6 @@
             new IntegrationTest().Test(input, output);
         }
 
-        /// <summary>
-        /// The cdr.
-        /// </summary>
-        /// <param name="input">
-        /// The input.
-        /// </param>
-        /// <param name="output">
-        /// The output.
-        /// </param>
         [TestCase("(cdr nil)", "NIL")]
         [TestCase("(cdr (cons 1 2))", "2")]
         [TestCase("(cdr '(1 2))", "(2)")]
@@ -111,15 +63,6 @@
             new IntegrationTest().Test(input, output);
         }
 
-        /// <summary>
-        /// The cons.
-        /// </summary>
-        /// <param name="input">
-        /// The input.
-        /// </param>
-        /// <param name="output">
-        /// The output.
-        /// </param>
         [TestCase("(cons 1 2)", "(1 . 2)")]
         [TestCase("(cons 1 nil)", "(1)")]
         [TestCase("(cons nil 2)", "(NIL . 2)")]
@@ -132,15 +75,6 @@
             new IntegrationTest().Test(input, output);
         }
 
-        /// <summary>
-        /// The consp.
-        /// </summary>
-        /// <param name="input">
-        /// The input.
-        /// </param>
-        /// <param name="output">
-        /// The output.
-        /// </param>
         [TestCase("(consp nil)", "NIL")]
         [TestCase("(consp 1)", "NIL")]
         [TestCase("(consp (lambda () t))", "NIL")]
@@ -150,15 +84,6 @@
             new IntegrationTest().Test(input, output);
         }
 
-        /// <summary>
-        /// The eq.
-        /// </summary>
-        /// <param name="input">
-        /// The input.
-        /// </param>
-        /// <param name="output">
-        /// The output.
-        /// </param>
         [TestCase("(eq nil nil)", "T")]
         [TestCase("(eq t t)", "T")]
         [TestCase("(eq nil t)", "NIL")]
@@ -177,15 +102,6 @@
             new IntegrationTest().Test(input, output);
         }
 
-        /// <summary>
-        /// The eval.
-        /// </summary>
-        /// <param name="input">
-        /// The input.
-        /// </param>
-        /// <param name="output">
-        /// The output.
-        /// </param>
         [TestCase("(eval nil)", "NIL")]
         [TestCase("(eval t)", "T")]
         [TestCase("(eval '(+ 1 2))", "3")]
@@ -194,30 +110,12 @@
             new IntegrationTest().Test(input, output);
         }
 
-        /// <summary>
-        /// The eval.
-        /// </summary>
-        /// <param name="input">
-        /// The input.
-        /// </param>
-        /// <param name="output">
-        /// The output.
-        /// </param>
         [TestCase("(define x 2) (eval 'x)", "X", "2")]
         public void Eval(string input, params string[] output)
         {
             new IntegrationTest().Test(input, output);
         }
 
-        /// <summary>
-        /// The subtract.
-        /// </summary>
-        /// <param name="input">
-        /// The input.
-        /// </param>
-        /// <param name="output">
-        /// The output.
-        /// </param>
         [TestCase("(- 1)", "-1")]
         [TestCase("(- 4000000000)", "-4000000000")]
         [TestCase("(- 6 3 2 1)", "0")]
@@ -228,12 +126,6 @@
             new IntegrationTest().Test(input, output);
         }
 
-        /// <summary>
-        /// The wiggle.
-        /// </summary>
-        /// <param name="input">
-        /// The input.
-        /// </param>
         [TestCase("1")]
         [TestCase("0.0625")]
         public void Wiggle(string input)
