@@ -117,6 +117,7 @@
         [TestCase("(some identity '(1 2))", "T")]
         [TestCase("(some identity '(nil nil))", "NIL")]
         [TestCase("(some identity '(nil 3 nil))", "T")]
+        [TestCase("(some not '(nil 4))", "T")]
         public void Some(string input, string output)
         {
             new IntegrationTest().Test(input, output);
@@ -127,6 +128,7 @@
         [TestCase("(every identity '(1 2))", "T")]
         [TestCase("(every identity '(nil))", "NIL")]
         [TestCase("(every identity '(1 2 nil 3))", "NIL")]
+        [TestCase("(every not '(nil nil))", "T")]
         public void Every(string input, string output)
         {
             new IntegrationTest().Test(input, output);

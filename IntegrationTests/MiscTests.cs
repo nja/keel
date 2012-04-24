@@ -3,8 +3,15 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class FibTest
+    public class MiscTests
     {
+        [Test]
+        public void Quine()
+        {
+            const string Quine = "((LAMBDA (X) (LIST X (LIST 'QUOTE X))) '(LAMBDA (X) (LIST X (LIST 'QUOTE X))))";
+            new IntegrationTest().Test(Quine, Quine);
+        }
+
         [TestCase("(fib 0)", "0")]
         [TestCase("(fib 1)", "1")]
         [TestCase("(fib 2)", "1")]
