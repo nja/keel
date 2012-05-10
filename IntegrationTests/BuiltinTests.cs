@@ -84,6 +84,17 @@
             new IntegrationTest().Test(input, output);
         }
 
+        [TestCase("(/ 10 3)", "3.3333333333333335")]
+        [TestCase("(= (/ (+ MAXINT MAXINT MAXINT) 3) MAXINT)", "T")]
+        [TestCase("(= (/ MININT -1) (+ MAXINT 1))", "T")]
+        [TestCase("(/ 22 7)", "3.1428571428571428")]
+        [TestCase("(/ 2000000000 2000000000)", "1")]
+        [TestCase("(/ MININT MININT)", "1")]
+        public void Divide(string input, string output)
+        {
+            new IntegrationTest().Test(input, output);
+        }
+
         [TestCase("(eq nil nil)", "T")]
         [TestCase("(eq t t)", "T")]
         [TestCase("(eq nil t)", "NIL")]

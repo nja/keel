@@ -91,17 +91,36 @@
         {
             try
             {
-                return new LispInteger(checked(dividend.Value / divisor.Value));
+                checked
+                {
+                    int remainder;
+                    int quotient = Math.DivRem(dividend.Value, divisor.Value, out remainder);
+
+                    if (remainder != 0)
+                    {
+                        return Divide((LispDouble)dividend, (LispDouble)divisor);
+                    }
+
+                    return new LispInteger(quotient);
+                }
             }
             catch (OverflowException)
             {
-                return new LispBigInteger((BigInteger)dividend.Value / divisor.Value);
+                return Divide((LispBigInteger)dividend, (LispBigInteger)divisor);
             }
         }
 
         protected static LispNumber Divide(LispBigInteger dividend, LispBigInteger divisor)
         {
-            return new LispBigInteger(dividend.Value / divisor.Value);
+            BigInteger remainder;
+            BigInteger quotient = BigInteger.DivRem(dividend.Value, divisor.Value, out remainder);
+
+            if (remainder != 0)
+            {
+                return Divide((LispDouble)dividend, (LispDouble)divisor);
+            }
+
+            return MakeInteger(quotient);
         }
 
         protected static LispNumber Divide(LispDouble dividend, LispDouble divisor)
