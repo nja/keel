@@ -15,6 +15,7 @@
             Add(new Cdr());
             Add(new ConsBuiltin());
             Add(new Consp());
+            Add(new Divide());
             Add(new Eq());
             Add(new EvalBuiltin());
             Add(new NumberInequality("<", (a, b) => a.CompareTo(b) < 0));

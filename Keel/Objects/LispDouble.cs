@@ -4,7 +4,13 @@
 
     public class LispDouble : LispNumber
     {
+        #region Constants and Fields
+
         public readonly double Value;
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public LispDouble(double value)
         {
@@ -21,15 +27,9 @@
             this.Value = (double)bigInteger.Value;
         }
 
-        public override string ToString()
-        {
-            return Value.ToString("R", CultureInfo.InvariantCulture);
-        }
+        #endregion
 
-        public override LispNumber Negate()
-        {
-            return new LispDouble(-Value);
-        }
+        #region Public Methods and Operators
 
         public override LispNumber Add(LispNumber addend)
         {
@@ -38,7 +38,7 @@
 
         public override LispNumber Add(LispInteger addend)
         {
-            return new LispDouble(addend).Add(this);
+            return Add(this, (LispDouble)addend);
         }
 
         public override LispNumber Add(LispDouble addend)
@@ -48,7 +48,92 @@
 
         public override LispNumber Add(LispBigInteger addend)
         {
-            return new LispDouble(addend).Add(this);
+            return Add(this, (LispDouble)addend);
+        }
+
+        public override int CompareTo(LispNumber number)
+        {
+            return -number.CompareTo(this);
+        }
+
+        public override int CompareTo(LispInteger number)
+        {
+            return -Compare(number, this);
+        }
+
+        public override int CompareTo(LispDouble number)
+        {
+            return Value.CompareTo(number.Value);
+        }
+
+        public override int CompareTo(LispBigInteger number)
+        {
+            return -Compare(number, this);
+        }
+
+        public override LispNumber DivideBy(LispNumber divisor)
+        {
+            return divisor.DivideInto(this);
+        }
+
+        public override LispNumber DivideBy(LispInteger divisor)
+        {
+            return Divide(this, (LispDouble)divisor);
+        }
+
+        public override LispNumber DivideBy(LispBigInteger divisor)
+        {
+            return Divide(this, (LispDouble)divisor);
+        }
+
+        public override LispNumber DivideBy(LispDouble divisor)
+        {
+            return Divide(this, divisor);
+        }
+
+        public override LispNumber DivideInto(LispNumber dividend)
+        {
+            return DivideBy(this);
+        }
+
+        public override LispNumber DivideInto(LispInteger dividend)
+        {
+            return Divide((LispDouble)dividend, this);
+        }
+
+        public override LispNumber DivideInto(LispDouble dividend)
+        {
+            return Divide(dividend, this);
+        }
+
+        public override LispNumber DivideInto(LispBigInteger dividend)
+        {
+            return Divide((LispDouble)dividend, this);
+        }
+
+        public override LispNumber Multiply(LispNumber factor)
+        {
+            return factor.Multiply(this);
+        }
+
+        public override LispNumber Multiply(LispInteger factor)
+        {
+            return Multiply(this, (LispDouble)factor);
+        }
+
+        public override LispNumber Multiply(LispDouble factor)
+        {
+            return Multiply(this, factor);
+        }
+
+        public override LispNumber Multiply(LispBigInteger factor)
+        {
+            return Multiply(this, (LispDouble)factor);
+        }
+
+        public override LispNumber Negate()
+        {
+            return new LispDouble(-Value);
         }
 
         public override bool NumberEquals(LispNumber number)
@@ -71,24 +156,11 @@
             return NumberEquals(number, this);
         }
 
-        public override int CompareTo(LispNumber number)
+        public override string ToString()
         {
-            return -number.CompareTo(this);
+            return Value.ToString("R", CultureInfo.InvariantCulture);
         }
 
-        public override int CompareTo(LispInteger number)
-        {
-            return -Compare(number, this);
-        }
-
-        public override int CompareTo(LispDouble number)
-        {
-            return Value.CompareTo(number.Value);
-        }
-
-        public override int CompareTo(LispBigInteger number)
-        {
-            return -Compare(number, this);
-        }
+        #endregion
     }
 }
