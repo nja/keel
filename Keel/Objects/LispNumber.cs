@@ -5,6 +5,26 @@
 
     public abstract class LispNumber : LispObject
     {
+        public static LispNumber MakeNumber(int x)
+        {
+            return new LispInteger(x);
+        }
+
+        public static LispNumber MakeNumber(BigInteger x)
+        {
+            if (x < int.MinValue || int.MaxValue < x)
+            {
+                return new LispBigInteger(x);
+            }
+
+            return new LispInteger((int)x);
+        }
+
+        public static LispNumber MakeNumber(double x)
+        {
+            return new LispDouble(x);
+        }
+
         public abstract LispNumber Negate();
 
         public abstract LispNumber Add(LispNumber addend);
@@ -54,22 +74,13 @@
         public abstract int CompareTo(LispDouble number);
 
         public abstract int CompareTo(LispBigInteger number);
-
-        protected static LispNumber MakeInteger(BigInteger bi)
-        {
-            if (bi < int.MinValue || int.MaxValue < bi)
-            {
-                return new LispBigInteger(bi);
-            }
-
-            return new LispInteger((int)bi);
-        }
         
         protected static LispNumber Add(LispInteger a, LispInteger b)
         {
             try
             {
-                return new LispInteger(checked(a.Value + b.Value));
+                var sum = checked(a.Value + b.Value);
+                return MakeNumber(sum);
             }
             catch (OverflowException)
             {
@@ -79,12 +90,12 @@
 
         protected static LispNumber Add(LispDouble a, LispDouble b)
         {
-            return new LispDouble(a.Value + b.Value);
+            return MakeNumber(a.Value + b.Value);
         }
 
         protected static LispNumber Add(LispBigInteger a, LispBigInteger b)
         {
-            return MakeInteger(a.Value + b.Value);
+            return MakeNumber(a.Value + b.Value);
         }
 
         protected static LispNumber Divide(LispInteger dividend, LispInteger divisor)
@@ -101,7 +112,7 @@
                         return Divide((LispDouble)dividend, (LispDouble)divisor);
                     }
 
-                    return new LispInteger(quotient);
+                    return MakeNumber(quotient);
                 }
             }
             catch (OverflowException)
@@ -120,34 +131,36 @@
                 return Divide((LispDouble)dividend, (LispDouble)divisor);
             }
 
-            return MakeInteger(quotient);
+            return MakeNumber(quotient);
         }
 
         protected static LispNumber Divide(LispDouble dividend, LispDouble divisor)
         {
-            return new LispDouble(dividend.Value / divisor.Value);
+            return MakeNumber(dividend.Value / divisor.Value);
         }
 
         protected static LispNumber Multiply(LispInteger a, LispInteger b)
         {
             try
             {
-                return new LispInteger(checked(a.Value * b.Value));
+                int product = checked(a.Value * b.Value);
+                return MakeNumber(product);
             }
             catch (OverflowException)
             {
-                return new LispBigInteger((BigInteger)a.Value * b.Value);
+                BigInteger product = (BigInteger)a.Value * b.Value;
+                return MakeNumber(product);
             }
         }
 
         protected static LispNumber Multiply(LispDouble a, LispDouble b)
         {
-            return new LispDouble(a.Value * b.Value);
+            return MakeNumber(a.Value * b.Value);
         }
 
         protected static LispNumber Multiply(LispBigInteger a, LispBigInteger b)
         {
-            return MakeInteger(a.Value * b.Value);
+            return MakeNumber(a.Value * b.Value);
         }
 
         protected static bool NumberEquals(LispInteger a, LispInteger b)
