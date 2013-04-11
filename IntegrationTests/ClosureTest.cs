@@ -5,6 +5,7 @@
     [TestFixture]
     public class ClosureTest
     {
+        [Test]
         public void Adder()
         {
             var test = new IntegrationTest(@"
